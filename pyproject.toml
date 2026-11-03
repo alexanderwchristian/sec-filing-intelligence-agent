@@ -21,6 +21,7 @@ dev = ["pytest>=8,<10"]
 [project.scripts]
 filing-intel = "filing_intel.cli:main"
 filing-intel-universe = "filing_intel.universe:main"
+filing-intel-universe-scan = "filing_intel.universe_scan:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
