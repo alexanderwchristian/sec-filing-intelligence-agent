@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import json
 import sys
 from pathlib import Path
@@ -15,6 +16,11 @@ from .reporting import to_markdown
 from .sec import SecClient
 from .store import Store
 from .monitor import scan
+from .intel_store import IntelStore
+from .intel_monitor import scan_intelligence
+from .intel_research import investigate_event
+from .intel_digest import prepare_digest, send_digest
+from .intel_scheduler import run_daily
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -59,8 +65,71 @@ def main(argv: list[str] | None = None) -> int:
         item.add_argument("--format", choices=["markdown", "json"], default="markdown")
         item.add_argument("--out", help="Output path; defaults to stdout")
         item.add_argument("--ai", action="store_true", help="Optional LLM interpretation, requires API key")
+    intelligence = subs.add_parser("intelligence", help="Fund+stock SEC research product")
+    intelligence.add_argument("action", choices=[
+        "add","list","disable","scan","backfill","events","status",
+        "investigate","digest","send","daily"])
+    intelligence.add_argument("--db", default=os.getenv("INTEL_DB_PATH",".filing-intel/intelligence.sqlite3"))
+    intelligence.add_argument("--kind", choices=["fund","stock"])
+    intelligence.add_argument("--cik", help="SEC registrant CIK (digits)")
+    intelligence.add_argument("--name")
+    intelligence.add_argument("--ticker")
+    intelligence.add_argument("--series-id")
+    intelligence.add_argument("--class-id")
+    intelligence.add_argument("--watch-id")
+    intelligence.add_argument("--since")
+    intelligence.add_argument("--to")
+    intelligence.add_argument("--event-id")
+    intelligence.add_argument("--day")
+    intelligence.add_argument("--no-send", action="store_true")
+    intelligence.add_argument("--force", action="store_true")
+
     args = parser.parse_args(argv)
     try:
+        if args.command == "intelligence":
+            if args.action == "daily":
+                output = run_daily(db=args.db, day=args.day, send=not args.no_send)
+                print(json.dumps(output,indent=2))
+                return 0
+            with IntelStore(args.db) as store:
+                if args.action == "add":
+                    if not args.kind or not args.cik or not args.cik.isdigit() or not args.name:
+                        raise ValueError("add requires --kind, numeric --cik and --name")
+                    wid = store.add_watch(args.kind,int(args.cik),args.name,
+                        ticker=args.ticker,series_id=args.series_id,class_id=args.class_id)
+                    output = {"watch_id":wid,"watch":store.watch(wid)}
+                elif args.action == "list":
+                    output = store.watches()
+                elif args.action == "disable":
+                    if not args.watch_id:
+                        raise ValueError("disable requires --watch-id")
+                    store.disable_watch(args.watch_id)
+                    output = {"disabled_watch_id":args.watch_id}
+                elif args.action in ("scan","backfill"):
+                    output = scan_intelligence(store,SecClient(),since=args.since,
+                        until=args.to,mode=args.action)
+                elif args.action == "events":
+                    output = store.events(kind=args.kind,since=args.since)
+                elif args.action == "status":
+                    output = {"watchlist":store.watches(),"runs":store.runs(),
+                              "checkpoints":store.checkpoints(),"digests":store.digests()}
+                elif args.action == "investigate":
+                    if not args.event_id:
+                        raise ValueError("investigate requires --event-id")
+                    output = investigate_event(store,args.event_id,force=args.force)
+                elif args.action == "digest":
+                    from datetime import datetime,timezone
+                    day=args.day or datetime.now(timezone.utc).date().isoformat()
+                    doc=prepare_digest(store,day)
+                    output = {"day":day,"status":doc["status"],"markdown":doc["markdown"]}
+                elif args.action == "send":
+                    from datetime import datetime,timezone
+                    day=args.day or datetime.now(timezone.utc).date().isoformat()
+                    output = send_digest(store,day)
+                else:
+                    raise ValueError("Unknown intelligence subcommand")
+            print(json.dumps(output,indent=2))
+            return 2 if isinstance(output,dict) and output.get("status")=="partial" else 0
         if args.command in ("watchlist", "scan", "backfill", "status", "results"):
             with Store(args.db) as store:
                 if args.command == "watchlist":
