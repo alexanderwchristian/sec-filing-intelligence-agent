@@ -1,6 +1,6 @@
 # Evaluation plan and release gates
 
-**Status:** planned v2 evaluation. The existing `examples/evaluation_cases.json` includes 5 synthetic detector regressions, not a real-world accuracy estimate.
+**Status:** evaluator implemented in filing_intel.intel_evaluation with strict and relaxed event F1 and deterministic source-grounding. Manual public SEC gold labels and broad real-filing benchmarks remain incomplete. The existing 5-case synthetic detector regressions are NOT real-world accuracy.
 
 [PR1 verification](PR1_MONITORING.md) records 32 passing deterministic tests and an offline end-to-end CLI replay with fictional sources. A separate real SEC rehearsal passed on one Apple annual pair, including all 131 quoted normalized spans and idempotent replay. These checks do not measure general event accuracy.
 

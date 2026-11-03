@@ -1,6 +1,6 @@
 # Implementation plan: reviewable vertical slices
 
-**Status:** Stage 1 issuer 10-K monitoring slice implemented; the product is NOT complete. Scope is US SEC **fund and stock filings only**, with one combined live dashboard and daily digest as required MVP functionality. [Implementation, validation, scope and rollback](PR1_MONITORING.md). Later PRs/stages remain planned. Existing CLI and Streamlit comparison workflows remain functional.
+**Status:** Stage 1 issuer 10-K foundation merged; v2 local implementation now includes both US SEC fund/stock candidate paths, dashboard, bounded research, daily digest, SMTP sender and scheduler. Tests are offline; live two-track SEC acceptance, labeled accuracy and deployed delivery remain incomplete. Do not call this production-ready. [Implementation, validation, scope and rollback](PR1_MONITORING.md). Later PRs/stages remain planned. Existing CLI and Streamlit comparison workflows remain functional.
 
 ## Stage 0: baseline and specification signoff
 - Validate repository vs README; make CI and `.gitignore` actually present in GitHub (they were missing from the inspected remote despite existing in an earlier local package).

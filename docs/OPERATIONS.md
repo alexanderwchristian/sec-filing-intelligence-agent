@@ -1,6 +1,6 @@
 # Daily monitoring and operations
 
-**Status:** scheduled operation and delivery remain proposed. [PR1](PR1_MONITORING.md) implements manual local SQLite scans, backfill, checkpoints and recovery. The MVP does not currently run scheduled monitoring or deliver email.
+**Status:** local daily scheduler and SMTP sender implemented in the v2 feature branch, not deployed. Owner must configure persistent host, SEC contact identity, email provider and monitoring. SMTP send ledger is fail-closed on uncertain delivery and requires manual reconciliation. See DEPLOYMENT.md.
 
 ## Execution modes
 - **Scheduled:** e.g. each US business day with configurable UTC/timezone scheduling. Use a lookback sweep greater than schedule interval plus durable checkpoints, rather than trusting exact scheduler execution time.

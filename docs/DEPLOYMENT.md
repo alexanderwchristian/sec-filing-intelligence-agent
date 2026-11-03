@@ -109,3 +109,17 @@ No automated trading or portfolio recommendations. Retrieved filings
 are untrusted data, not executable instructions. Model output requires
 human review and quote validation. Document storage grows over time;
 apply backup and retention controls on the deployment host.
+
+
+## Optional specialized LLM detector fanout
+
+Set USE_SEMANTIC_DETECTORS=1 and OPENAI_API_KEY to enable the bounded
+per-category LLM review after deterministic extraction. Each candidate
+retains its source text. At most six category calls and six examples per
+category per filing are assessed; additional events remain persisted
+with an explicit not_assessed_budget annotation. Quote-grounding and
+model-output schema are validated independently. Model errors and
+exceeded budgets mark a scan partial instead of becoming no-change
+reports. Model calls cost money; default is disabled. A lexical
+detector and an LLM verdict still do NOT establish investment
+materiality or fund-class attribution.

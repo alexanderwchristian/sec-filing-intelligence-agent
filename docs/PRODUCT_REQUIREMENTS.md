@@ -1,11 +1,11 @@
 # Product requirements: SEC Filing Intelligence Agent
 
-**Status:** proposed v2 specification; **implementation:** pairwise comparison plus [Stage 1, PR1 local durable 10-K monitoring](PR1_MONITORING.md). Broader coverage, unattended operation, investigation and delivery remain planned.
+**Status:** fund/stock MVP code implemented in the v2 feature branch for local use, pending review, merge, real SEC acceptance and deployment. Stage 1 issuer 10-K monitoring remains separately available. Detection quality and fund-class attribution are not production-validated.
 
 ## Product promise
 For a US SEC watchlist of **funds (mutual funds/ETFs) and public-company stocks only**, discover new relevant SEC disclosures, detect and normalize changes, investigate likely implications using cited public sources, and deliver a trustworthy daily research briefing. Primary job: reduce missed changes and analyst review time without replacing research judgment.
 
-**Non-negotiable MVP:** Both filing tracks, a functional interactive dashboard, a combined daily briefing, bounded AI research follow-ups, and durable recovery must work end to end. Back-end-only monitoring is an intermediate development increment, not a delivered product. See [US filing coverage](FILING_COVERAGE.md).
+**Non-negotiable MVP:** Both filing tracks, a functional interactive dashboard, a combined daily briefing, bounded AI research follow-ups, and durable recovery must work end to end. The local implementation requires official-source validation and SMTP/hosting activation before claiming full acceptance. Back-end-only monitoring is an intermediate development increment, not a delivered product. See [US filing coverage](FILING_COVERAGE.md).
 
 ## Users and jobs
 1. **Fund research analyst:** track fee, investment objective, portfolio-manager, benchmark, fund status and product changes; find effective dates and affected share classes/series.
