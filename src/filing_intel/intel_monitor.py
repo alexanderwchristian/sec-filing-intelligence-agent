@@ -92,7 +92,8 @@ def _load(store: IntelStore, client: SecClient, watch: dict, record: Any,
 
 def scan_intelligence(store: IntelStore, client: SecClient, *,
                       since: str | None = None, until: str | None = None,
-                      mode: str = "scan") -> dict:
+                      mode: str = "scan",
+                      watch_ids: list[str] | None = None) -> dict:
     today=datetime.now(timezone.utc).date()
     end=_date(until,today)
     beginning=_date(since,end-timedelta(days=90))
@@ -101,9 +102,25 @@ def scan_intelligence(store: IntelStore, client: SecClient, *,
     if mode not in {"scan","backfill","on_demand","scheduled"}:
         raise ValueError("Unsupported scan mode")
     with store.scan_lock():
-        watches=store.watches(enabled_only=True)
+        all_watches=store.watches(enabled_only=True)
+        if watch_ids is None:
+            if len(all_watches) > 25:
+                raise ValueError(
+                    "More than 25 enabled watches; use explicit batches. "
+                    "A full-universe scan must not run without bounded scope.")
+            watches=all_watches
+        else:
+            requested=set(watch_ids)
+            available={w["watch_id"] for w in all_watches}
+            if not requested or not requested.issubset(available):
+                raise ValueError("Batch contains no active watches or an unknown watch ID")
+            if len(requested)>25:
+                raise ValueError("Maximum 25 watches per SEC batch")
+            watches=[w for w in all_watches if w["watch_id"] in requested]
         run_id=store.begin_run(mode,beginning.isoformat(),end.isoformat())
-        stats={"watches":len(watches),"eligible_filings":0,"new_documents":0,
+        stats={"watches":len(watches),"watchlist_total":len(all_watches),
+               "scope":"batch" if watch_ids is not None else "all",
+               "eligible_filings":0,"new_documents":0,
                "new_events":0,"replayed_events":0,"unsupported_forms":0,
                "filing_errors":0,"watch_errors":0}
         errors=[]
@@ -159,4 +176,6 @@ def scan_intelligence(store: IntelStore, client: SecClient, *,
                 store.complete_watch(run_id,wid,"failed",str(exc))
         status=store.finish_run(run_id,stats,errors)
     return {"run_id":run_id,"status":status,"from":beginning.isoformat(),
-            "to":end.isoformat(),"stats":stats,"errors":errors}
+            "to":end.isoformat(),"stats":stats,"errors":errors,
+            "coverage":{"selected_watches":len(watches),"total_watches":len(all_watches),
+                        "complete_watchlist":len(watches)==len(all_watches)}}
