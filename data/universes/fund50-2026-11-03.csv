@@ -1,51 +1,51 @@
-ticker,name,kind,category,provider
-VOO,Vanguard S&P 500 ETF,etf,us_equity,Vanguard
-IVV,iShares Core S&P 500 ETF,etf,us_equity,iShares
-VTI,Vanguard Total Stock Market ETF,etf,us_equity,Vanguard
-ITOT,iShares Core S&P Total U.S. Stock Market ETF,etf,us_equity,iShares
-SCHB,Schwab U.S. Broad Market ETF,etf,us_equity,Schwab
-IWM,iShares Russell 2000 ETF,etf,us_equity,iShares
-VUG,Vanguard Growth ETF,etf,us_equity,Vanguard
-VTV,Vanguard Value ETF,etf,us_equity,Vanguard
-QUAL,iShares MSCI USA Quality Factor ETF,etf,us_equity,iShares
-USMV,iShares MSCI USA Min Vol Factor ETF,etf,us_equity,iShares
-VXUS,Vanguard Total International Stock ETF,etf,international_equity,Vanguard
-VEA,Vanguard FTSE Developed Markets ETF,etf,international_equity,Vanguard
-VWO,Vanguard FTSE Emerging Markets ETF,etf,international_equity,Vanguard
-IEFA,iShares Core MSCI EAFE ETF,etf,international_equity,iShares
-IEMG,iShares Core MSCI Emerging Markets ETF,etf,international_equity,iShares
-EFA,iShares MSCI EAFE ETF,etf,international_equity,iShares
-EEM,iShares MSCI Emerging Markets ETF,etf,international_equity,iShares
-SCHF,Schwab International Equity ETF,etf,international_equity,Schwab
-VSS,Vanguard FTSE All-World ex-US Small-Cap ETF,etf,international_equity,Vanguard
-EWJ,iShares MSCI Japan ETF,etf,international_equity,iShares
-BND,Vanguard Total Bond Market ETF,etf,fixed_income,Vanguard
-AGG,iShares Core U.S. Aggregate Bond ETF,etf,fixed_income,iShares
-BNDX,Vanguard Total International Bond ETF,etf,fixed_income,Vanguard
-LQD,iShares iBoxx Investment Grade Corporate Bond ETF,etf,fixed_income,iShares
-HYG,iShares High Yield Corporate Bond ETF,etf,fixed_income,iShares
-TLT,iShares 20+ Year Treasury Bond ETF,etf,fixed_income,iShares
-TIP,iShares TIPS Bond ETF,etf,fixed_income,iShares
-VCIT,Vanguard Intermediate-Term Corporate Bond ETF,etf,fixed_income,Vanguard
-SCHZ,Schwab U.S. Aggregate Bond ETF,etf,fixed_income,Schwab
-MUB,iShares National Muni Bond ETF,etf,fixed_income,iShares
-XLK,Technology Select Sector SPDR Fund,etf,sector_factor_active,SPDR
-XLF,Financial Select Sector SPDR Fund,etf,sector_factor_active,SPDR
-XLE,Energy Select Sector SPDR Fund,etf,sector_factor_active,SPDR
-XLV,Health Care Select Sector SPDR Fund,etf,sector_factor_active,SPDR
-XLU,Utilities Select Sector SPDR Fund,etf,sector_factor_active,SPDR
-XLI,Industrial Select Sector SPDR Fund,etf,sector_factor_active,SPDR
-ICLN,iShares Global Clean Energy ETF,etf,sector_factor_active,iShares
-ARKK,ARK Innovation ETF,etf,sector_factor_active,ARK
-QQQM,Invesco NASDAQ 100 ETF,etf,sector_factor_active,Invesco
-JEPI,JPMorgan Equity Premium Income ETF,etf,sector_factor_active,JPMorgan
-VTSAX,Vanguard Total Stock Market Index Fund Admiral Shares,mutual_fund,mutual_fund,Vanguard
-VFIAX,Vanguard 500 Index Fund Admiral Shares,mutual_fund,mutual_fund,Vanguard
-VTIAX,Vanguard Total International Stock Index Fund Admiral Shares,mutual_fund,mutual_fund,Vanguard
-VBTLX,Vanguard Total Bond Market Index Fund Admiral Shares,mutual_fund,mutual_fund,Vanguard
-FXAIX,Fidelity 500 Index Fund,mutual_fund,mutual_fund,Fidelity
-FSKAX,Fidelity Total Market Index Fund,mutual_fund,mutual_fund,Fidelity
-FCNTX,Fidelity Contrafund,mutual_fund,mutual_fund,Fidelity
-PONAX,PIMCO Income Fund Class A,mutual_fund,mutual_fund,PIMCO
-DODGX,Dodge & Cox Stock Fund,mutual_fund,mutual_fund,Dodge & Cox
-PRNHX,T. Rowe Price New Horizons Fund,mutual_fund,mutual_fund,T. Rowe Price
+ticker,name,kind,category,provider,cik,series_id,class_id
+VOO,Vanguard S&P 500 ETF,etf,us_equity,Vanguard,0000036405,S000002839,C000092055
+IVV,iShares Core S&P 500 ETF,etf,us_equity,iShares,0001100663,S000004310,C000012040
+VTI,Vanguard Total Stock Market ETF,etf,us_equity,Vanguard,0000036405,S000002848,C000007808
+ITOT,iShares Core S&P Total U.S. Stock Market ETF,etf,us_equity,iShares,0001100663,S000004317,C000012047
+SCHB,Schwab U.S. Broad Market ETF,etf,us_equity,Schwab,0001454889,S000026631,C000079978
+IWM,iShares Russell 2000 ETF,etf,us_equity,iShares,0001100663,S000004344,C000012074
+VUG,Vanguard Growth ETF,etf,us_equity,Vanguard,0000036405,S000002842,C000007786
+VTV,Vanguard Value ETF,etf,us_equity,Vanguard,0000036405,S000002840,C000007778
+QUAL,iShares MSCI USA Quality Factor ETF,etf,us_equity,iShares,0001100663,S000041444,C000128677
+USMV,iShares MSCI USA Min Vol Factor ETF,etf,us_equity,iShares,0001100663,S000031838,C000099141
+VXUS,Vanguard Total International Stock ETF,etf,international_equity,Vanguard,0000736054,S000002932,C000094038
+VEA,Vanguard FTSE Developed Markets ETF,etf,international_equity,Vanguard,0000923202,S000004386,C000051262
+VWO,Vanguard FTSE Emerging Markets ETF,etf,international_equity,Vanguard,0000857489,S000005786,C000015902
+IEFA,iShares Core MSCI EAFE ETF,etf,international_equity,iShares,0001100663,S000038930,C000119715
+IEMG,iShares Core MSCI Emerging Markets ETF,etf,international_equity,iShares,0000930667,S000038923,C000119708
+EFA,iShares MSCI EAFE ETF,etf,international_equity,iShares,0001100663,S000004351,C000012081
+EEM,iShares MSCI Emerging Markets ETF,etf,international_equity,iShares,0000930667,S000004266,C000011970
+SCHF,Schwab International Equity ETF,etf,international_equity,Schwab,0001454889,S000026637,C000079984
+VSS,Vanguard FTSE All-World ex-US Small-Cap ETF,etf,international_equity,Vanguard,0000857489,S000025074,C000074581
+EWJ,iShares MSCI Japan ETF,etf,international_equity,iShares,0000930667,S000004249,C000011953
+BND,Vanguard Total Bond Market ETF,etf,fixed_income,Vanguard,0000794105,S000002564,C000046844
+AGG,iShares Core U.S. Aggregate Bond ETF,etf,fixed_income,iShares,0001100663,S000004362,C000012092
+BNDX,Vanguard Total International Bond ETF,etf,fixed_income,Vanguard,0001532203,S000035729,C000109503
+LQD,iShares iBoxx Investment Grade Corporate Bond ETF,etf,fixed_income,iShares,0001100663,S000004361,C000012091
+HYG,iShares High Yield Corporate Bond ETF,etf,fixed_income,iShares,0001100663,S000016772,C000046846
+TLT,iShares 20+ Year Treasury Bond ETF,etf,fixed_income,iShares,0001100663,S000004360,C000012090
+TIP,iShares TIPS Bond ETF,etf,fixed_income,iShares,0001100663,S000004363,C000012093
+VCIT,Vanguard Intermediate-Term Corporate Bond ETF,etf,fixed_income,Vanguard,0001021882,S000026863,C000080855
+SCHZ,Schwab U.S. Aggregate Bond ETF,etf,fixed_income,Schwab,0001454889,S000033156,C000102078
+MUB,iShares National Muni Bond ETF,etf,fixed_income,iShares,0001100663,S000018861,C000052220
+XLK,Technology Select Sector SPDR Fund,etf,sector_factor_active,SPDR,0001064641,S000006415,C000017601
+XLF,Financial Select Sector SPDR Fund,etf,sector_factor_active,SPDR,0001064641,S000006411,C000017597
+XLE,Energy Select Sector SPDR Fund,etf,sector_factor_active,SPDR,0001064641,S000006410,C000017596
+XLV,Health Care Select Sector SPDR Fund,etf,sector_factor_active,SPDR,0001064641,S000006412,C000017598
+XLU,Utilities Select Sector SPDR Fund,etf,sector_factor_active,SPDR,0001064641,S000006416,C000017602
+XLI,Industrial Select Sector SPDR Fund,etf,sector_factor_active,SPDR,0001064641,S000006413,C000017599
+ICLN,iShares Global Clean Energy ETF,etf,sector_factor_active,iShares,0001100663,S000022498,C000065074
+ARKK,ARK Innovation ETF,etf,sector_factor_active,ARK,0001579982,S000042977,C000133121
+QQQM,Invesco NASDAQ 100 ETF,etf,sector_factor_active,Invesco,0001378872,S000069448,C000221604
+JEPI,JPMorgan Equity Premium Income ETF,etf,sector_factor_active,JPMorgan,0001485894,S000068402,C000218810
+VHYAX,Vanguard High Dividend Yield Index Fund Admiral Shares,mutual_fund,mutual_fund,Vanguard,0001004655,S000014011,C000209802
+VSMAX,Vanguard Small-Cap Index Fund Admiral Shares,mutual_fund,mutual_fund,Vanguard,0000036405,S000002845,C000007796
+VWINX,Vanguard Wellesley Income Fund Investor Shares,mutual_fund,mutual_fund,Vanguard,0000105544,S000004405,C000012161
+VWELX,Vanguard Wellington Fund Investor Shares,mutual_fund,mutual_fund,Vanguard,0000105563,S000004406,C000012163
+FXAIX,Fidelity 500 Index Fund,mutual_fund,mutual_fund,Fidelity,0000819118,S000006027,C000100045
+FSKAX,Fidelity Total Market Index Fund,mutual_fund,mutual_fund,Fidelity,0000819118,S000006026,C000103359
+FCNTX,Fidelity Contrafund,mutual_fund,mutual_fund,Fidelity,0000024238,S000006037,C000016601
+PONAX,PIMCO Income Fund Class A,mutual_fund,mutual_fund,PIMCO,0000810893,S000016548,C000046098
+DODGX,Dodge & Cox Stock Fund,mutual_fund,mutual_fund,Dodge & Cox,0000029440,S000011202,C000030875
+PRNHX,T. Rowe Price New Horizons Fund,mutual_fund,mutual_fund,T. Rowe Price,0000080248,S000002106,C000005478
