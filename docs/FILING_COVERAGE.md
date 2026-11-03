@@ -1,38 +1,66 @@
-# Regulatory filing coverage matrix
+# US SEC fund and stock filing coverage
 
-**Status:** proposed. The **only currently implemented live parser** is US public-company 10-K Item 1A. Other lines are target/experimental, not shipped support. Scope is watched entities, not the entirety of EDGAR.
+**Product scope:** US SEC EDGAR filings for (1) registered investment funds, including mutual funds and ETFs, and (2) public companies and their publicly traded securities. **Do not implement UK, UCITS, Singapore, non-US regulators, unrelated general news, or a global regulatory crawler.** Scope is a user-configured watchlist, not every EDGAR accession.
 
-[PR1](PR1_MONITORING.md) adds manual durable monitoring for that same parser. Other forms, including 10-K/A, are inventoried with explicit exclusion reasons; their analysis remains unsupported. A live public-source monitoring rehearsal passed on one Apple annual pair; broader coverage validation remains outstanding.
+**Current reality:** Only 10-K Item 1A issuer comparison and its local durable monitoring are implemented. Everything below marked target is not working until tested with public filings. The existing static GitHub Pages demo is fictional, not a live monitor.
 
-| Phase | Geography/entity | Source & form family | Detection focus | Baseline/identity considerations | State |
-|---|---|---|---|---|---|
-| Existing | US issuer | SEC 10-K Item 1A | Risk wording adds/revisions/removals | Two latest 10-Ks by CIK | Implemented prototype |
-| P1 | US issuer | 10-K, 10-K/A | Risks, business, liquidity, governance and financial disclosure changes | Same section prior annual, amendments against original | Proposed |
-| P1 | US issuer | 10-Q, 10-Q/A | Risk, operations, liquidity, key facts | Comparable prior quarter/annual section as appropriate, not blindly preceding form | Proposed |
-| P1 | US issuer | 8-K, 8-K/A and exhibits as relevant | Discrete events, management, financing, results, material agreements | Event-first classification; amendment chain, duplicate press releases | Proposed |
-| P1/P2 | US registered investment company | N-1A, 485APOS/485BPOS, 497/497K and related applicable prospectus supplements | Fees, objectives, benchmarks, managers, share-class updates, closures/launches | CIK + series/class IDs, fund/registrant relationships, prospectus history | Proposed, validate forms |
-| P2 | US registered investment company | N-CSR, N-CSRS, N-PORT, N-CEN and related forms where relevant | Financial/shareholder reports, holdings or operational changes | Structured sections, reporting dates, amendments, disclosure timing | Proposed, validate form relevance |
-| P3 | UK/UCITS | Official UK regulator and fund/manager disclosure sources | Fund objectives, fees, managers, benchmarks, closures | ISIN/share-class/fund identity, publication and license rules | Research only |
-| P3 | Singapore | Official MAS/public scheme disclosure sources | Prospectus and fund status changes | Fund identifiers and access/license rules | Research only |
+## Stock / public-company filings
 
-## Canonical identity
-`source_system`, `jurisdiction`, `registrant_cik`, `series_id`, `class_id`, `ticker`, `isin`, `fund_name`, `registrant_name`, aliases, validity dates and confidence/provenance. Not every identifier is present on every SEC form. Do not equate fund/share class with registrant. Ambiguous mappings require review and must not be silently resolved by an LLM.
+| Forms / source family | What to detect | Baseline / treatment | Priority |
+|---|---|---|---|
+| 10-K, 10-K/A | Financials, annual results, risks, strategy, business changes, liquidity, accounting, controls | Prior comparable annual and amendment-to-original | P0 target; Item 1A 10-K already partially implemented |
+| 10-Q, 10-Q/A | Quarterly results, risks, liquidity, financial metrics, revisions | Comparable quarter/year and amendment lineage | P0 target |
+| 8-K, 8-K/A, relevant exhibits | Earnings, material agreements, management changes, acquisitions, financings, guidance when disclosed | Event-first, reconcile duplicate exhibits and amended disclosure | P0 target |
+| DEF 14A and related proxy statements | Directors, compensation, governance, shareholder proposals | Prior comparable proxy, named entity matching | P1 target |
+| SC 13D/13G and amendments; Forms 3/4/5 | Ownership changes and insider transactions | Stakeholder/security identity, amendments and repeated transactions | P1 target |
+| S-1/S-3, 424B and related securities offerings | New offerings, dilution, securities terms | Offering terms and amendments, not annual-report comparison | P1 target |
 
-## Source ingestion rules
-- Discover from official submission feeds and filing archives; version by accession and document hash, not ticker alone. Store `filing_date`, `accepted_at` (if available), `discovered_at`, `period_end`, `form`, `is_amendment`, `parent_accession` (if determinable).
-- Filter by watchlist and explicitly supported forms; retain an inventory of excluded forms and source failures to measure coverage gaps.
-- Select baseline per event family: prior annual vs annual; 10-Q year-over-year/quarter-over-quarter as justified; 8-K event-first vs related disclosures; amended filing vs original *and* latest valid baseline; prospectus changes vs prior same fund and class.
-- Parse source-specific HTML, text, XBRL and tables independently. Preserve source spans and table cells; fail closed when necessary sections are not identifiable.
-- For fee schedules, capture fee type, unit, value and effective date; for managers/benchmarks capture full names and identifiers; for closure/launch capture fund/class lifecycle and dates. Never represent an absent date as today's date.
-- Avoid collapsing separate share classes or investment products; keep an explicit many-to-many issuer/registrant/fund/class mapping.
+A form is supported only when its parser, applicable sections, category detectors, and baseline policy pass documented public-data tests. Do not count excluded or unparsed forms as no changes.
 
-## Coverage expansion gates
-Before marking a form supported, provide: (1) official source documentation; (2) at least 10 diverse public examples including amendments/edge cases where available; (3) baseline-selection test; (4) parser fail-closed tests; (5) category extraction and quote-grounding tests; (6) documented known blind spots; (7) reproducible integration smoke test.
+## Fund filings: mutual funds and ETFs
 
-## Known uncertainty
-Form applicability and filing terminology vary. The specific fund form taxonomy above is a prioritized research inventory, not a guarantee that any individual form contains every listed change category. Regulator and market datasets outside SEC require separate terms/quality verification.
+| Forms / source family | What to detect | Baseline / treatment | Priority |
+|---|---|---|---|
+| N-1A, 485APOS/485BPOS, 497/497K and applicable supplements | Portfolio managers, benchmarks, objectives, strategies, management fees, expense ratios, waivers, new classes, closures/launches | Same registrant **and** correct fund series/class, previous applicable prospectus and amendment/supplement chronology | P0 target |
+| N-CSR, N-CSRS and applicable shareholder reports | Fund performance, material management/strategy disclosures, shareholder-report changes | Same fund/period, preserve reporting and filing dates | P1 target |
+| N-PORT, N-CEN where relevant and accessible | Holdings/exposure and fund operational data where the form supports it | Structured period comparisons and data quality checks | P1 target |
+| N-14 and relevant merger/liquidation supplements | Fund mergers, reorganizations, wind-down and class impact | Lifecycle/event-specific baseline | P1 target |
 
-## Primary references
-- SEC EDGAR APIs: https://www.sec.gov/search-filings/edgar-application-programming-interfaces
-- SEC developer resources: https://www.sec.gov/about/developer-resources
-- SEC EDGAR company and fund search: https://www.sec.gov/edgar/search/
+Some ETF structures use different filing forms; the discovery layer must check the legal structure before assuming an N-1A prospectus applies. Filing categories and exact applicability are subject to official SEC verification before declaring them supported.
+
+## Two entity tracks, one product
+
+- **Stock identity:** issuer CIK, ticker history, securities/classes where relevant, registrant and filing dates.
+- **Fund identity:** registrant CIK, SEC series ID, class ID, fund name, ticker/ISIN if supported, aliases and effective identity periods.
+- Never attribute a registrant-level paragraph to a specific fund or share class without source-backed identity resolution. Ambiguity means needs-review, not a verified alert.
+- Both tracks share watchlist, discovery checkpoints, raw/normalized evidence store, event feed, investigation tools, Streamlit dashboard, review status and daily email digest.
+- Each track has separate **form-specific** parsing, baselines, detectors, and evaluation labels.
+
+## Detection requirements
+
+**Funds:** portfolio-manager changes; benchmark/index changes; investment objective and strategy changes; fees, expenses and waivers; launch, closure, merger, reorganization; share-class implications.
+
+**Stocks:** financial and operating changes; material risk and controls; management/governance; liquidity and financing; guidance and earnings disclosures; significant agreements, acquisitions, ownership/capital structure where supported.
+
+Capture added, revised, removed, corrected and first-observed events. Every claim needs an accession and precise supported quote, including prior and current evidence when applicable. Preserve effective date separately from filing date. Never silently truncate findings, promote lexical text changes into economic conclusions, or fabricate materiality.
+
+## MVP acceptance (both tracks mandatory)
+
+1. Add/remove at least one fund and one public company through the **interactive UI**.
+2. Discover and persist real official SEC filings for both, including at least one relevant supported fund prospectus and one public-company filing.
+3. Emit structured, non-duplicate, source-linked candidate changes for both, with explicit entity identity and complete/partial run status.
+4. Generate a cited AI-assisted summary with uncertainties and concrete, bounded follow-up investigation suggestions; no model-generated source evidence.
+5. Render both in the same **live dashboard**, with filters and evidence inspection.
+6. Produce a reproducible **daily briefing** for the combined watchlist, with failure/replay/no-change semantics and durable delivery ledger.
+7. Test a missed run, amended filing, false positive, ambiguous fund share class, evidence mismatch, and repeated delivery before calling it operational.
+
+Until these tests pass, README/UI must clearly label the specific capability as planned or experimental.
+
+## Sources and compliance
+
+Official SEC EDGAR submissions and filing archives; documented rate limits, contactable SEC user agent and backoff. No proprietary employer source code/prompts/data. No trading automation. Exclude non-US regulator sources from the roadmap unless the owner explicitly reopens that scope.
+
+Official references:
+- https://www.sec.gov/search-filings/edgar-application-programming-interfaces
+- https://www.sec.gov/about/developer-resources
+- https://www.sec.gov/edgar/search/

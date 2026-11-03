@@ -1,6 +1,6 @@
 # Implementation plan: reviewable vertical slices
 
-**Status:** Stage 1, PR1 local 10-K monitoring slice implemented for review; single-issuer public-source replay rehearsal passed. [Implementation, validation, scope and rollback](PR1_MONITORING.md). Later PRs/stages remain planned. Existing CLI and Streamlit comparison workflows remain functional.
+**Status:** Stage 1 issuer 10-K monitoring slice implemented; the product is NOT complete. Scope is US SEC **fund and stock filings only**, with one combined live dashboard and daily digest as required MVP functionality. [Implementation, validation, scope and rollback](PR1_MONITORING.md). Later PRs/stages remain planned. Existing CLI and Streamlit comparison workflows remain functional.
 
 ## Stage 0: baseline and specification signoff
 - Validate repository vs README; make CI and `.gitignore` actually present in GitHub (they were missing from the inspected remote despite existing in an earlier local package).
@@ -16,19 +16,19 @@
 - Unit tests: missed run, duplicate accession, amendment, parser failure, >20 findings, wrong baseline, idempotent replay.
 **Gate:** real public filing discovered, compared, stored, and replayed without duplicate events; all failures visible.
 
-## Stage 2: fund events and specialized detector fanout
-- Resolve SEC registrant to series/class identities; validate fees, objective, portfolio manager, benchmark, lifecycle schemas with public prospectuses.
+## Stage 2: both filing tracks and specialized detector fanout
+- Make the two SEC tracks explicit: public-company 10-K/10-Q/8-K (plus amendments) and mutual-fund/ETF prospectuses. Resolve fund registrant to series/class identities; validate fees, objective, portfolio manager, benchmark, lifecycle schemas with public prospectuses.
 - Add form/section detectors one at a time, each with fixtures, eligibility rules, clear before/after/effective date, and entity resolution.
 - Canonicalization/dedup and category-specific ambiguity handling, preserving every candidate and source.
-**Gate:** demonstrate at least two distinct fund categories and a share-class distinction on public documents; amendment correction tracked.
+**Gate:** demonstrate actual detection on BOTH an SEC issuer filing and a fund prospectus, at least two distinct fund categories, a share-class distinction, and amendment lineage. The same persisted event feed powers an initial interactive dashboard.
 
-## Stage 3: bounded research agent and on-demand path
+## Stage 3: research agent, on-demand path and operational UI
 - Add typed research tools over persisted public filings and events. Implement one agent with tool limits/stop conditions and model-independent quote validation.
 - Produce cited context, uncertainty, hypotheses and 1-3 concrete investigation questions/actions; no unsolicited trade instructions.
-- Use shared pipeline for on-demand lookups and scheduled requests. Capture tool trace, budget and errors.
-**Gate:** integration fixture shows useful investigation, exact citations, successful abstention, prompt-injection resistance and budget exhaustion fallback.
+- Use shared pipeline for on-demand lookups and scheduled requests. Capture tool trace, budget and errors. Extend Streamlit into a usable combined fund/stock watchlist, findings, investigations and monitoring health dashboard.
+**Gate:** an analyst can inspect real fund AND stock findings, source evidence and next steps in the live UI. Integration fixtures demonstrate useful investigation, exact citations, successful abstention, prompt-injection resistance and budget exhaustion fallback.
 
-## Stage 4: daily digest and unattended operation
+## Stage 4: combined daily digest and unattended operation
 - Add report assembler, configurable schedule, email service with send ledger, run completeness indicators, durable checkpoints and recovery.
 - GitHub Actions scheduler or managed job only as trigger, durable database external. Provide incident alert and manual re-run.
 **Gate:** 3 consecutive reproducible scheduled runs (in controlled testing), simulated skipped day and email failure without duplicated alerts; public demo transparently distinguishes live and fictional modes.
@@ -43,7 +43,7 @@
 PR1: foundation + state + incremental 10-K scan. PR2: 10-Q/8-K, amendments and baselines. PR3: first fund prospectus detector and identity. PR4: investigation agent. PR5: scheduler/email and replay. PR6: evaluation/UX. Each PR includes migration, tests, sample output, updated limitation claims and a rollback note.
 
 ## Design decisions to resolve before coding
-1. First watchlist and whether fund intelligence or public issuers get priority (recommend fund-level categories first because that is the product differentiator).
+1. First fund and stock watchlist examples. Both tracks are required for the end-to-end MVP; initial detector breadth can be phased within each track.
 2. Postgres/cloud deployment vs local SQLite-only prototype (daily unattended delivery requires durable hosting).
 3. Digest timezone, hour, recipient channel, weekends and no-change email policy.
 4. Allowed public research sources beyond EDGAR, token/cost cap and number of events to investigate per run.
