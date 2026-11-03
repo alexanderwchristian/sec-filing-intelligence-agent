@@ -90,7 +90,8 @@ def main(argv: list[str] | None = None) -> int:
             if args.action == "daily":
                 output = run_daily(db=args.db, day=args.day, send=not args.no_send)
                 print(json.dumps(output,indent=2))
-                return 0
+                scan_status = output.get("scan", {}).get("status") if isinstance(output, dict) else None
+                return 2 if scan_status in {"partial", "failed"} else 0
             with IntelStore(args.db) as store:
                 if args.action == "add":
                     if not args.kind or not args.cik or not args.cik.isdigit() or not args.name:
