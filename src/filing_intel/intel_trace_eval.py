@@ -118,16 +118,16 @@ def evaluate_pinned(*, db: str, client=None, ai: bool = False,
             # At most one AI research investigation, independently capped at
             # three read-only tool calls and 600 output tokens per model turn.
             if ai:
-                candidates = [e for e in events if e["kind"] == "stock"
-                              and e.get("new_evidence")]
+                candidates = [e for e in events if e.get("new_evidence")]
                 if not candidates:
-                    raise RuntimeError("No grounded stock candidate available for AI research")
+                    raise RuntimeError("No grounded candidate available for AI research")
                 event = candidates[0]
                 with step_span("investigate_one_grounded_finding", {
                     "event_id": event["event_id"], "category": event["category"]
                 }):
                     investigation = investigate_event(store, event["event_id"])
                 report["ai_investigation"] = {
+                    "kind": event["kind"],
                     "event_id": event["event_id"],
                     "status": investigation["status"],
                     "model": os.getenv("RESEARCH_MODEL", "gpt-5-mini"),
