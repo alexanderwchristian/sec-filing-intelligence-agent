@@ -1,0 +1,50 @@
+{
+  "note": "Entirely fictional risk-factor text. These cases only check regression behavior, not real-world quality.",
+  "cases": [
+    {
+      "id": "new-cyber-risk",
+      "old": "Our subscription revenue depends on customer retention, and we may experience slower growth if customers reduce usage of the Northstar platform. Customer budgets for technology products may change during economic downturns, which could reduce demand for our services and affect revenue growth.\n\nOur cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers.",
+      "new": "Our subscription revenue depends on customer retention, and we may experience slower growth if customers reduce usage of the Northstar platform. Customer budgets for technology products may change during economic downturns, which could reduce demand for our services and affect revenue growth.\n\nOur cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers.\n\nDuring the fiscal year, our systems experienced a ransomware attack that temporarily interrupted customer reporting services. Although core operations were restored, future cyberattacks could expose confidential customer data, result in regulatory enforcement, and cause losses exceeding existing insurance limits.",
+      "expected": [
+        {
+          "type": "added",
+          "contains": "ransomware attack"
+        }
+      ]
+    },
+    {
+      "id": "revised-concentration-risk",
+      "old": "Our subscription revenue depends on customer retention, and we may experience slower growth if customers reduce usage of the Northstar platform. Customer budgets for technology products may change during economic downturns, which could reduce demand for our services and affect revenue growth.\n\nOur cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers.\n\nWe compete with large cloud infrastructure providers and smaller specialist vendors. Increased competition may require us to lower prices or increase spending on product development, affecting our operating margins and ability to attract new customers.",
+      "new": "Our subscription revenue depends on customer retention, and we may experience slower growth if customers reduce usage of the Northstar platform. Customer budgets for technology products may change during economic downturns, which could reduce demand for our services and affect revenue growth.\n\nOur cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers. We now rely on a single regional data center partner for our largest enterprise workload and have not secured a fully redundant alternative.\n\nWe compete with large cloud infrastructure providers and smaller specialist vendors. Increased competition may require us to lower prices or increase spending on product development, affecting our operating margins and ability to attract new customers.",
+      "expected": [
+        {
+          "type": "revised",
+          "contains": "single regional data center partner"
+        }
+      ]
+    },
+    {
+      "id": "removed-supplier-risk",
+      "old": "Our subscription revenue depends on customer retention, and we may experience slower growth if customers reduce usage of the Northstar platform. Customer budgets for technology products may change during economic downturns, which could reduce demand for our services and affect revenue growth.\n\nOur cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers.\n\nWe depend on a small number of suppliers for specialized hardware components. A failure by these suppliers to deliver equipment on time could delay capacity expansion and disrupt our planned infrastructure deployment schedule.",
+      "new": "Our subscription revenue depends on customer retention, and we may experience slower growth if customers reduce usage of the Northstar platform. Customer budgets for technology products may change during economic downturns, which could reduce demand for our services and affect revenue growth.\n\nOur cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers.",
+      "expected": [
+        {
+          "type": "removed",
+          "contains": "small number of suppliers"
+        }
+      ]
+    },
+    {
+      "id": "unchanged-risk",
+      "old": "Our subscription revenue depends on customer retention, and we may experience slower growth if customers reduce usage of the Northstar platform. Customer budgets for technology products may change during economic downturns, which could reduce demand for our services and affect revenue growth.\n\nOur cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers.\n\nWe compete with large cloud infrastructure providers and smaller specialist vendors. Increased competition may require us to lower prices or increase spending on product development, affecting our operating margins and ability to attract new customers.",
+      "new": "Our subscription revenue depends on customer retention, and we may experience slower growth if customers reduce usage of the Northstar platform. Customer budgets for technology products may change during economic downturns, which could reduce demand for our services and affect revenue growth.\n\nOur cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers.\n\nWe compete with large cloud infrastructure providers and smaller specialist vendors. Increased competition may require us to lower prices or increase spending on product development, affecting our operating margins and ability to attract new customers.",
+      "expected": []
+    },
+    {
+      "id": "reordered-risk",
+      "old": "Our subscription revenue depends on customer retention, and we may experience slower growth if customers reduce usage of the Northstar platform. Customer budgets for technology products may change during economic downturns, which could reduce demand for our services and affect revenue growth.\n\nOur cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers.\n\nWe compete with large cloud infrastructure providers and smaller specialist vendors. Increased competition may require us to lower prices or increase spending on product development, affecting our operating margins and ability to attract new customers.",
+      "new": "We compete with large cloud infrastructure providers and smaller specialist vendors. Increased competition may require us to lower prices or increase spending on product development, affecting our operating margins and ability to attract new customers.\n\nOur subscription revenue depends on customer retention, and we may experience slower growth if customers reduce usage of the Northstar platform. Customer budgets for technology products may change during economic downturns, which could reduce demand for our services and affect revenue growth.\n\nOur cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers.",
+      "expected": []
+    }
+  ]
+}

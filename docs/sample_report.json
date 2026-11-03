@@ -1,0 +1,50 @@
+{
+  "company": "Northstar Cloud Systems (fictional)",
+  "old_date": "2024-02-20",
+  "new_date": "2025-02-20",
+  "old_url": "synthetic://northstar/2024",
+  "new_url": "synthetic://northstar/2025",
+  "changes": [
+    {
+      "change_type": "added",
+      "attention": "high",
+      "old_quote": "",
+      "new_quote": "During the fiscal year, our systems experienced a ransomware attack that temporarily interrupted customer reporting services. Although core operations were restored, future cyberattacks could expose confidential customer data, result in regulatory enforcement, and cause losses exceeding existing insurance limits.",
+      "old_url": "synthetic://northstar/2024",
+      "new_url": "synthetic://northstar/2025",
+      "similarity": 0.0,
+      "rationale": "No close text match was found in the previous filing. Review the new passage.",
+      "ai_interpretation": "",
+      "ai_evidence_verified": false
+    },
+    {
+      "change_type": "revised",
+      "attention": "medium",
+      "old_quote": "Our cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers.",
+      "new_quote": "Our cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers. We now rely on a single regional data center partner for our largest enterprise workload and have not secured a fully redundant alternative.",
+      "old_url": "synthetic://northstar/2024",
+      "new_url": "synthetic://northstar/2025",
+      "similarity": 0.725,
+      "rationale": "Wording changed compared with the prior filing. Review both cited passages.",
+      "ai_interpretation": "",
+      "ai_evidence_verified": false
+    },
+    {
+      "change_type": "removed",
+      "attention": "low",
+      "old_quote": "We depend on a small number of suppliers for specialized hardware components. A failure by these suppliers to deliver equipment on time could delay capacity expansion and disrupt our planned infrastructure deployment schedule.",
+      "new_quote": "",
+      "old_url": "synthetic://northstar/2024",
+      "new_url": "synthetic://northstar/2025",
+      "similarity": 0.0,
+      "rationale": "No close text match was found in the current filing. Review the previous passage.",
+      "ai_interpretation": "",
+      "ai_evidence_verified": false
+    }
+  ],
+  "warnings": [
+    "Attention tiers are keyword heuristics; not legal or financial materiality judgments"
+  ],
+  "scope": "Item 1A Risk Factors of two 10-K filings",
+  "method": "Heuristic text alignment with verbatim document evidence"
+}

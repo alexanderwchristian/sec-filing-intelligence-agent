@@ -1,0 +1,7 @@
+Our subscription revenue depends on customer retention, and we may experience slower growth if customers reduce usage of the Northstar platform. Customer budgets for technology products may change during economic downturns, which could reduce demand for our services and affect revenue growth.
+
+Our cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers.
+
+We compete with large cloud infrastructure providers and smaller specialist vendors. Increased competition may require us to lower prices or increase spending on product development, affecting our operating margins and ability to attract new customers.
+
+We depend on a small number of suppliers for specialized hardware components. A failure by these suppliers to deliver equipment on time could delay capacity expansion and disrupt our planned infrastructure deployment schedule.
