@@ -1,0 +1,19 @@
+{
+  "snapshot_date": "2026-11-03",
+  "sp500": {
+    "source_url": "https://github.com/lawcal/sp500-components-history/blob/main/data/sp500_components.csv",
+    "upstream": "Derived from Wikipedia's S&P 500 constituents list, maintained daily",
+    "constituent_securities": 503,
+    "unique_issuer_ciks": 500,
+    "source_retrieved": "2026-11-03",
+    "note": "Point-in-time pilot snapshot. Verify stock tickers and issuer CIKs using the SEC ticker map at import. Nov 4 Okta addition not yet effective."
+  },
+  "fund_sample": {
+    "selection": "Curated diversified 50 tickers; 40 ETFs and 10 mutual-fund classes across five investment categories",
+    "source_for_resolution": "https://www.sec.gov/files/company_tickers_mf.json",
+    "class_identity_status": "Not pre-validated; importer must verify each exact SEC ticker, CIK, series ID and class ID before loading",
+    "unique_target_classes": 50
+  },
+  "SEC_docs": "https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data",
+  "note": "Snapshot is sampling input, not a verified operational SEC analysis or index-licensing claim"
+}
