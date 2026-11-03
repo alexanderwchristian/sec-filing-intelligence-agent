@@ -10,6 +10,7 @@ from .categories import (FUND_FORMS, STOCK_FORMS, FORM_FAMILIES,
 from .intel_store import IntelStore
 from .sec import SecClient, archive_url
 from .intel_semantic import review_candidates
+from .intel_tracing import workflow, step_span
 
 
 def _date(value: str | None, default: date) -> date:
@@ -78,7 +79,8 @@ def _load(store: IntelStore, client: SecClient, watch: dict, record: Any,
         return existing
     key=(watch["cik"],record.accession)
     if key not in cache:
-        raw,decoded=client.fetch_document(watch["cik"],record)
+        with step_span("sec_filing_fetch", {"cik": str(watch["cik"]), "accession": record.accession}):
+            raw,decoded=client.fetch_document(watch["cik"],record)
         cache[key]=(raw,decoded)
     raw,decoded=cache[key]
     text=canonical_text(decoded)
@@ -100,7 +102,8 @@ def scan_intelligence(store: IntelStore, client: SecClient, *,
         raise ValueError("Scan start date must precede end date")
     if mode not in {"scan","backfill","on_demand","scheduled"}:
         raise ValueError("Unsupported scan mode")
-    with store.scan_lock():
+    with store.scan_lock(), workflow("sec_watchlist_scan",
+         {"mode": mode, "since": beginning.isoformat(), "until": end.isoformat()}):
         watches=store.watches(enabled_only=True)
         run_id=store.begin_run(mode,beginning.isoformat(),end.isoformat())
         stats={"watches":len(watches),"eligible_filings":0,"new_documents":0,
@@ -113,7 +116,8 @@ def scan_intelligence(store: IntelStore, client: SecClient, *,
             allowed=FUND_FORMS if watch["kind"]=="fund" else STOCK_FORMS
             watch_failed=False
             try:
-                records=client.discover_filings(watch["cik"])
+                with step_span("sec_submission_discovery", {"cik": str(watch["cik"]), "kind": watch["kind"]}):
+                    records=client.discover_filings(watch["cik"])
                 stats["unsupported_forms"]+=sum(1 for r in records
                    if beginning.isoformat()<=r.filed<=end.isoformat() and r.form not in allowed)
                 relevant=sorted((r for r in records if r.form in allowed),
@@ -130,7 +134,9 @@ def scan_intelligence(store: IntelStore, client: SecClient, *,
                         baseline=_load(store,client,watch,prior,cache) if prior else None
                         # A prospectus for a multi-fund registrant is still review-only.
                         # The classifier does not claim verified fund/class attribution.
-                        events=detect_events(watch,current,baseline)
+                        with step_span("sec_candidate_detection",
+                                       {"cik": str(watch["cik"]), "accession": record.accession, "form": record.form}):
+                            events=detect_events(watch,current,baseline)
                         if os.getenv("USE_SEMANTIC_DETECTORS","0")=="1":
                             events,semantic_warnings=review_candidates(events)
                             if semantic_warnings:
