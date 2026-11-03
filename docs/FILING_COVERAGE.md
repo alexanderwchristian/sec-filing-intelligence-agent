@@ -2,7 +2,7 @@
 
 **Status:** proposed. The **only currently implemented live parser** is US public-company 10-K Item 1A. Other lines are target/experimental, not shipped support. Scope is watched entities, not the entirety of EDGAR.
 
-[PR1](PR1_MONITORING.md) adds manual durable monitoring for that same parser. Other forms, including 10-K/A, are inventoried with explicit exclusion reasons; their analysis remains unsupported. A live public-source monitoring rehearsal remains outstanding.
+[PR1](PR1_MONITORING.md) adds manual durable monitoring for that same parser. Other forms, including 10-K/A, are inventoried with explicit exclusion reasons; their analysis remains unsupported. A live public-source monitoring rehearsal passed on one Apple annual pair; broader coverage validation remains outstanding.
 
 | Phase | Geography/entity | Source & form family | Detection focus | Baseline/identity considerations | State |
 |---|---|---|---|---|---|

@@ -1,0 +1,68 @@
+{
+  "issuer_cik": "0000320193",
+  "window_start": "2025-01-01",
+  "window_end": "2026-11-03",
+  "first_run": {
+    "run_id": "d96eb4e4-a21a-4b63-8770-2670a300c0d4",
+    "status": "completed",
+    "window_start": "2025-01-01",
+    "window_end": "2026-11-03",
+    "discovered": 2272,
+    "eligible": 1,
+    "processed": 1,
+    "first_seen": 0,
+    "excluded": 162,
+    "parse_failures": 0,
+    "fetch_failures": 0,
+    "analysis_failures": 0,
+    "discovery_failures": 0,
+    "errors": [],
+    "coverage": "10-K Item 1A only; amendments and other forms inventoried but excluded"
+  },
+  "replay_run": {
+    "run_id": "83bcf734-8789-4062-9d92-e167373480a6",
+    "status": "completed",
+    "window_start": "2025-01-01",
+    "window_end": "2026-11-03",
+    "discovered": 0,
+    "eligible": 1,
+    "processed": 1,
+    "first_seen": 0,
+    "excluded": 162,
+    "parse_failures": 0,
+    "fetch_failures": 0,
+    "analysis_failures": 0,
+    "discovery_failures": 0,
+    "errors": [],
+    "coverage": "10-K Item 1A only; amendments and other forms inventoried but excluded"
+  },
+  "events": 90,
+  "verified_normalized_spans": 131,
+  "idempotent_events": true,
+  "unchanged_document_hashes": true,
+  "replay_document_fetches": 0,
+  "documents": [
+    {
+      "accession": "0000320193-24-000123",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/320193/000032019324000123/aapl-20240928.htm",
+      "filed": "2024-11-01",
+      "period_end": "2024-09-28",
+      "content_sha256": "a14d584e9804a87e92ddbd2446ade975e926a494671292403c811c1f4fc4b846"
+    },
+    {
+      "accession": "0000320193-25-000079",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm",
+      "filed": "2025-10-31",
+      "period_end": "2025-09-27",
+      "content_sha256": "6468e4b33a672d905bc1f6b86d8a62321f7a287930d1fa1f79a9bde57be10b6c"
+    }
+  ],
+  "comparisons": [
+    {
+      "accession": "0000320193-25-000079",
+      "baseline_accession": "0000320193-24-000123",
+      "baseline_reason": "prior annual 10-K with earlier filing date and distinct earlier report period",
+      "status": "compared"
+    }
+  ]
+}

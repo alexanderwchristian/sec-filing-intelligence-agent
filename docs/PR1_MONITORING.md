@@ -47,14 +47,30 @@ python examples/monitor_smoke.py
 
 The offline smoke uses the real CLI, SEC client and durable pipeline with a mocked transport and fictional source texts. It adds a watch, scans, backfills, reads status/results, and asserts equal evidence events on replay. `examples/monitor_sample.json` is its full example output: 3 candidates and idempotent replay. Its URLs illustrate SEC routing; they are **not actual SEC filings**. Run IDs/timestamps vary on rerun; event occurrence IDs are stable for unchanged fixture inputs and versions.
 
-Measured locally on Python 3.12: 30 tests passed, including all 13 original tests. Synthetic evaluation: 5 cases, TP=3, FP=0, FN=0; these are fixture regression results, not real-world accuracy. Demo, compare and offline monitor CLI smoke commands completed successfully. Tests cover missed intervals, late baselines, duplicate accessions, unsupported amendments, missing/malformed inventory, transient fetch failures, parse failures, raw immutability, interruption/recovery, wrong/ambiguous baselines, local lock contention and more than 350 units/20 findings.
+Measured locally on Python 3.12: 32 tests passed, including all 13 original tests. Synthetic evaluation: 5 cases, TP=3, FP=0, FN=0; these are fixture regression results, not real-world accuracy. Demo, compare and offline monitor CLI smoke commands completed successfully. Tests cover missed intervals, late baselines, duplicate accessions, unsupported amendments, missing/malformed inventory, transient fetch failures, parse failures, raw immutability, interruption/recovery, wrong/ambiguous baselines, local lock contention and more than 350 units/20 findings.
 
-### Live acceptance gate remains open
+### Live SEC acceptance rehearsal passed
 
-No contactable `SEC_USER_AGENT` was configured in the implementation environment. A real SEC discovery/comparison/storage/replay smoke was therefore not run; no public-source integration success or Stage 1 gate completion is claimed. To complete it, set your own contactable identification header locally, add a known issuer CIK, scan a recent annual filing interval, export the first results, scan again and check identical event IDs and preserved documents. Retain run summaries and source accession/URLs; do not commit the contact header or user watchlist. Inspect actual extraction/baseline quality before approving coverage claims. Network/SEC failures must produce exit 2 and an explicit partial/failed status.
+On 2026-11-03, the real CLI scanned Apple (CIK 0000320193) for filing dates 2025-01-01 through 2026-11-03 using the operator's contactable SEC_USER_AGENT. Identification was supplied only to the runtime process and is absent from commits and exported results.
+
+- Discovered 2,272 accession records; 162 unsupported-form records within the requested window were explicitly excluded.
+- Compared the one eligible annual filing, accession `0000320193-25-000079` (filed 2025-10-31), against `0000320193-24-000123` (filed 2024-11-01). Both official source URLs and stored SHA-256 values are in `examples/live_acceptance.json`.
+- Stored 90 lexical candidates. All 131 nonempty before/after quotes resolved exactly to their stored normalized document offsets, and both raw document hashes were independently recomputed successfully.
+- Repeated the scan: both runs completed, all event records were identical, document hashes were unchanged, and replay downloaded zero additional documents. Discovery metadata was still swept normally.
+- The first attempt exposed legacy SEC records with empty primary-document names. The fix inventories them with an official filing-index URL; fetching one when selected or required as a baseline still fails explicitly. Two regression tests cover these cases.
+
+This satisfies PR1's real-source discovery/comparison/storage/replay rehearsal for one issuer and one annual pair. The 90 candidates are heuristic text differences, not 90 verified economic events. Span verification establishes internal evidence traceability, not general detection accuracy or exhaustive parser quality across issuers.
+
+Reproduce with your own SEC_USER_AGENT configured in the shell:
+
+```bash
+python examples/live_monitor_smoke.py --db /persistent/path/live-acceptance.sqlite3 --since 2025-01-01 --to 2026-11-03 --out /private/path/acceptance.json
+```
+
+The script uses the actual CLI and network transport, validates raw hashes and every nonempty event quote, and checks event/document stability and zero additional document fetches on replay. No contact identity is embedded in the script.
 
 ## Rollback and remaining work
 
 Stop the worker, back up the SQLite database with SQLite's backup API (or after clean shutdown including any WAL sidecars), and revert the code commit. PR1 makes no changes to legacy CLI input/output defaults. There is no destructive down migration: retain the database as an audit archive; delete it only intentionally because that discards history/checkpoints. Future migrations must preserve raw documents and event lineage.
 
-PR2 owns amendment-parent/correction semantics, additional issuer forms and expanded baseline policies. Later stages own fund identity/detectors, research tools, externally hosted persistence, scheduling/email, broad labeled public evaluation and monitoring UI. Local SQLite history must not be placed on an ephemeral GitHub Actions disk and described as durable unattended monitoring. Current parser heuristics and lexical detector remain limited; the public-source gate, diverse real filings, source-specific encoding/layout review and production deployment validation are still required.
+PR2 owns amendment-parent/correction semantics, additional issuer forms and expanded baseline policies. Later stages own fund identity/detectors, research tools, externally hosted persistence, scheduling/email, broad labeled public evaluation and monitoring UI. Local SQLite history must not be placed on an ephemeral GitHub Actions disk and described as durable unattended monitoring. Current parser heuristics and lexical detector remain limited; diverse real filings, source-specific encoding/layout review and production deployment validation remain required beyond this single-pair rehearsal.

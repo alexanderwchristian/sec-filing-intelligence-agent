@@ -201,6 +201,32 @@ def test_scan_lock_rejects_concurrent_worker(store):
             scan(other, Client([]), since="2024-01-01", until="2024-12-31")
 
 
+def test_missing_historical_document_is_inventoried_without_blocking_recent_scan(store):
+    from dataclasses import replace
+    historical = replace(record(1994), document="", period_end=None)
+    client = Client([historical, record(2023), record(2024)])
+    result = scan(store, client, since="2024-01-01", until="2024-12-31")
+    assert result["status"] == "completed"
+    assert historical.accession not in client.fetched
+    row = store.conn.execute("SELECT * FROM filings WHERE accession=?", (historical.accession,)).fetchone()
+    assert row["document"] == "" and row["source_url"].endswith("-index.html")
+
+
+def test_missing_selected_document_fails_explicitly(store):
+    from dataclasses import replace
+    missing = replace(record(2024), document="")
+    client = Client([record(2023), missing])
+    def fetch(cik, rec):
+        from filing_intel.sec import archive_url
+        archive_url(cik, rec)
+        raise AssertionError("Missing document should fail URL validation")
+    client.fetch_document = fetch
+    result = scan(store, client, since="2024-01-01", until="2024-12-31")
+    assert result["status"] == "partial" and result["fetch_failures"] == 1
+    assert "primary-document" in result["errors"][0]["error"]
+    assert not store.results()["events"]
+
+
 def test_ambiguous_baseline_fails_closed(store):
     from dataclasses import replace
     older = record(2023)

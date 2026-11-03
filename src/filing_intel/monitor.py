@@ -202,10 +202,10 @@ def inventory(store, watch, records, since, until):
             reason = None if record.form == "10-K" else "unsupported_form_pr1"
             # Excluded ownership/XML forms can use nested primary paths. Inventory
             # those verbatim and link their filing index without invoking the 10-K path validator.
-            url = archive_url(watch["cik"], record if reason is None else FilingRecord(
+            url = archive_url(watch["cik"], record if reason is None and record.document else FilingRecord(
                 record.accession, record.filed, record.accession + "-index.html", record.form))
-            if not record.document and record.form == "10-K":
-                raise ValueError("10-K primary document missing")
+            # Legacy submissions may omit a primary filename. Keep their inventory
+            # and fail fetching only when this filing is selected or required as a baseline.
             key = (watch["cik"], record.accession)
             existing = store.conn.execute("SELECT * FROM filings WHERE cik=? AND accession=?", key).fetchone()
             if existing and filing_record(existing) != record:
