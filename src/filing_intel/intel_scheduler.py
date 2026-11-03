@@ -36,9 +36,11 @@ def run_daily(*,db:str|None=None,day:str|None=None,send:bool=True)->dict:
         since=(datetime.fromisoformat(target).date()-timedelta(days=90)).isoformat()
         result=scan_intelligence(store,SecClient(),since=since,until=target,mode="scheduled")
         events=store.events(since=target,limit=10000)
-        # Bounded spend: only 5 highest-priority new candidates per daily run.
-        for item in [e for e in events if e["priority"]=="high"][:5]:
-            investigate_event(store,item["event_id"])
+        # A present key must not automatically spend credits on daily runs.
+        # Operator must explicitly enable model-based investigation.
+        if os.getenv("ENABLE_DAILY_AI_RESEARCH", "0") == "1":
+            for item in [e for e in events if e["priority"]=="high"][:5]:
+                investigate_event(store,item["event_id"])
         digest=prepare_digest(store,target)
         outcome={"status":"prepared","day":target,"scan":result,
                  "digest_id":digest["digest_id"]}

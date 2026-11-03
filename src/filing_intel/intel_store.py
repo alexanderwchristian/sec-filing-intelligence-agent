@@ -219,10 +219,13 @@ class IntelStore:
             WHERE watch_id=? AND accession=?""",(watch_id,accession)).fetchone()
         return dict(row) if row else None
 
-    def filings(self, watch_id: str, *, limit: int = 200) -> list[dict]:
-        return [dict(r) for r in self.conn.execute("""SELECT watch_id,accession,form,filed,
-          period_end,source_url,content_hash,identity_status FROM intel_filings
-          WHERE watch_id=? ORDER BY filed DESC,accession DESC LIMIT ?""",(watch_id,limit))]
+    def filings(self, watch_id: str, *, limit: int | None = 200) -> list[dict]:
+        sql = """SELECT watch_id,accession,form,filed,period_end,source_url,
+          content_hash,identity_status FROM intel_filings
+          WHERE watch_id=? ORDER BY filed DESC,accession DESC"""
+        if limit is None:
+            return [dict(r) for r in self.conn.execute(sql,(watch_id,))]
+        return [dict(r) for r in self.conn.execute(sql+" LIMIT ?",(watch_id,limit))]
 
     def put_event(self, event: dict) -> bool:
         with self.conn:

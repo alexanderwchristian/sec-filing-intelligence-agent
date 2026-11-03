@@ -183,3 +183,12 @@ To deploy and validate the implemented v2 workspace, follow [the deployment and 
 Investment analysts can spend substantial time reviewing recurring disclosures. The design goal is to **reduce the first-pass review burden without hiding the supporting documents**. A useful first prototype should prioritize auditable evidence, understandable failure modes, and a workflow that helps a human decide what to inspect next.
 
 **Built as an independent portfolio prototype.** No affiliation with or endorsement by the U.S. Securities and Exchange Commission. Not investment advice.
+
+
+### No-cost fund + stock pilot acceptance
+
+See [the pilot acceptance guide](docs/PILOT_ACCEPTANCE.md) for local startup,
+real SEC discovery/baseline/replay gates, explicit opt-in tracing, no-cost
+daily operation, and the distinction between green CI and actual live evidence.
+The manual [live acceptance workflow](.github/workflows/pilot-live-acceptance.yml)
+never calls an AI model and produces a reviewable JSON report.
