@@ -1,0 +1,51 @@
+ticker,name,kind,category,provider
+VOO,Vanguard S&P 500 ETF,etf,us_equity,Vanguard
+IVV,iShares Core S&P 500 ETF,etf,us_equity,iShares
+VTI,Vanguard Total Stock Market ETF,etf,us_equity,Vanguard
+ITOT,iShares Core S&P Total U.S. Stock Market ETF,etf,us_equity,iShares
+SCHB,Schwab U.S. Broad Market ETF,etf,us_equity,Schwab
+IWM,iShares Russell 2000 ETF,etf,us_equity,iShares
+VUG,Vanguard Growth ETF,etf,us_equity,Vanguard
+VTV,Vanguard Value ETF,etf,us_equity,Vanguard
+QUAL,iShares MSCI USA Quality Factor ETF,etf,us_equity,iShares
+USMV,iShares MSCI USA Min Vol Factor ETF,etf,us_equity,iShares
+VXUS,Vanguard Total International Stock ETF,etf,international_equity,Vanguard
+VEA,Vanguard FTSE Developed Markets ETF,etf,international_equity,Vanguard
+VWO,Vanguard FTSE Emerging Markets ETF,etf,international_equity,Vanguard
+IEFA,iShares Core MSCI EAFE ETF,etf,international_equity,iShares
+IEMG,iShares Core MSCI Emerging Markets ETF,etf,international_equity,iShares
+EFA,iShares MSCI EAFE ETF,etf,international_equity,iShares
+EEM,iShares MSCI Emerging Markets ETF,etf,international_equity,iShares
+SCHF,Schwab International Equity ETF,etf,international_equity,Schwab
+VSS,Vanguard FTSE All-World ex-US Small-Cap ETF,etf,international_equity,Vanguard
+EWJ,iShares MSCI Japan ETF,etf,international_equity,iShares
+BND,Vanguard Total Bond Market ETF,etf,fixed_income,Vanguard
+AGG,iShares Core U.S. Aggregate Bond ETF,etf,fixed_income,iShares
+BNDX,Vanguard Total International Bond ETF,etf,fixed_income,Vanguard
+LQD,iShares iBoxx Investment Grade Corporate Bond ETF,etf,fixed_income,iShares
+HYG,iShares High Yield Corporate Bond ETF,etf,fixed_income,iShares
+TLT,iShares 20+ Year Treasury Bond ETF,etf,fixed_income,iShares
+TIP,iShares TIPS Bond ETF,etf,fixed_income,iShares
+VCIT,Vanguard Intermediate-Term Corporate Bond ETF,etf,fixed_income,Vanguard
+SCHZ,Schwab U.S. Aggregate Bond ETF,etf,fixed_income,Schwab
+MUB,iShares National Muni Bond ETF,etf,fixed_income,iShares
+XLK,Technology Select Sector SPDR Fund,etf,sector_factor_active,SPDR
+XLF,Financial Select Sector SPDR Fund,etf,sector_factor_active,SPDR
+XLE,Energy Select Sector SPDR Fund,etf,sector_factor_active,SPDR
+XLV,Health Care Select Sector SPDR Fund,etf,sector_factor_active,SPDR
+XLU,Utilities Select Sector SPDR Fund,etf,sector_factor_active,SPDR
+XLI,Industrial Select Sector SPDR Fund,etf,sector_factor_active,SPDR
+ICLN,iShares Global Clean Energy ETF,etf,sector_factor_active,iShares
+ARKK,ARK Innovation ETF,etf,sector_factor_active,ARK
+QQQM,Invesco NASDAQ 100 ETF,etf,sector_factor_active,Invesco
+JEPI,JPMorgan Equity Premium Income ETF,etf,sector_factor_active,JPMorgan
+VTSAX,Vanguard Total Stock Market Index Fund Admiral Shares,mutual_fund,mutual_fund,Vanguard
+VFIAX,Vanguard 500 Index Fund Admiral Shares,mutual_fund,mutual_fund,Vanguard
+VTIAX,Vanguard Total International Stock Index Fund Admiral Shares,mutual_fund,mutual_fund,Vanguard
+VBTLX,Vanguard Total Bond Market Index Fund Admiral Shares,mutual_fund,mutual_fund,Vanguard
+FXAIX,Fidelity 500 Index Fund,mutual_fund,mutual_fund,Fidelity
+FSKAX,Fidelity Total Market Index Fund,mutual_fund,mutual_fund,Fidelity
+FCNTX,Fidelity Contrafund,mutual_fund,mutual_fund,Fidelity
+PONAX,PIMCO Income Fund Class A,mutual_fund,mutual_fund,PIMCO
+DODGX,Dodge & Cox Stock Fund,mutual_fund,mutual_fund,Dodge & Cox
+PRNHX,T. Rowe Price New Horizons Fund,mutual_fund,mutual_fund,T. Rowe Price
