@@ -11,8 +11,10 @@
   "fund_sample": {
     "selection": "Curated diversified 50 tickers; 40 ETFs and 10 mutual-fund classes across five investment categories",
     "source_for_resolution": "https://www.sec.gov/files/company_tickers_mf.json",
-    "class_identity_status": "Not pre-validated; importer must verify each exact SEC ticker, CIK, series ID and class ID before loading",
-    "unique_target_classes": 50
+    "class_identity_status": "All 50 were mapped to a distinct series and a CIK/class using public SEC-derived mirror on 2026-11-03. Live revalidation against sec.gov company_tickers_mf.json is still REQUIRED before writes; filings not yet inspected.",
+    "unique_target_classes": 50,
+    "unique_fund_series": 50,
+    "sec_mapping_mirror": "https://github.com/jadchaar/sec-cik-mapper/tree/main/mappings/mutual_funds"
   },
   "SEC_docs": "https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data",
   "note": "Snapshot is sampling input, not a verified operational SEC analysis or index-licensing claim"
