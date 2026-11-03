@@ -1,0 +1,41 @@
+name: Verify stock and fund pilot identities
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sec-mapping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+      USE_SEMANTIC_DETECTORS: '0'
+      ENABLE_DAILY_AI_RESEARCH: '0'
+      ENABLE_OPENAI_TRACING: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install package without model dependencies
+        run: python -m pip install -e '.[dev]'
+      - name: Validate frozen universe offline
+        run: filing-intel-universe --mode validate --report artifacts/universe-validate.json
+      - name: Verify against official SEC stock and fund ticker maps
+        run: |
+          if [ -z "$SEC_USER_AGENT" ]; then
+            echo "::error::SEC_USER_AGENT secret is missing."
+            exit 1
+          fi
+          filing-intel-universe --mode verify --report artifacts/universe-resolution.json
+      - name: Upload full SEC mapping verification report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pilot-universe-sec-validation
+          path: artifacts/universe-*.json
+          if-no-files-found: warn
+          retention-days: 14
