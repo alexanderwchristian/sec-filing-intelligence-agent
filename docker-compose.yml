@@ -1,0 +1,21 @@
+services:
+  ui:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      INTEL_DB_PATH: /data/intelligence.sqlite3
+    volumes:
+      - ./runtime:/data
+    ports:
+      - "127.0.0.1:8501:8501"
+    command: ["streamlit","run","app.py","--server.address=0.0.0.0","--server.port=8501","--server.headless=true"]
+  scheduler:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      INTEL_DB_PATH: /data/intelligence.sqlite3
+    volumes:
+      - ./runtime:/data
+    command: ["python","-m","filing_intel.intel_scheduler"]
