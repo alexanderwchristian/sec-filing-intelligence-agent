@@ -220,8 +220,32 @@ def render() -> None:
             st.caption("A failed or partially completed scan never advances the affected watch checkpoint.")
 
         with tabs[6]:
-            st.subheader("Evaluation and known limitations")
-            st.warning("The existing 5-case synthetic detector benchmark is not a real-world fund or stock accuracy score.")
-            st.markdown("**Required evaluation:** manually labeled public SEC filings; strict/relaxed event F1, groundedness, coverage, latency, and failure analysis.")
-            st.markdown("**Source grounding:** Every new detection stores filing accession, source URL and exact normalized excerpt. Fund identity may remain needs-review.")
-            st.markdown("**Current limitations:** source-specific parsers, effective dates, share-class attribution and economic materiality require further validation.")
+            from .intel_evaluation import evaluate_labeled, verify_grounding
+            st.subheader("Evaluation and source grounding")
+            st.warning("The original 5-case synthetic benchmark is not real-world fund/stock accuracy. No accuracy claim is made without manually labeled public SEC data.")
+            ground=verify_grounding(store,all_events)
+            a,b,c=st.columns(3)
+            a.metric("Evidence excerpts checked",ground["checked"])
+            b.metric("Verified exact excerpts",ground["verified"])
+            c.metric("Groundedness",f"{ground['groundedness']:.1%}" if ground["groundedness"] is not None else "Not measured")
+            if ground["failures"]:
+                st.error("Evidence-source inconsistencies detected:")
+                st.json(ground["failures"][:25])
+            st.markdown("**Evaluate a public-file gold dataset**")
+            st.caption("Upload JSON as an array of labeled events, or an object containing a labels array. Use only independently labeled public SEC filing examples.")
+            uploaded=st.file_uploader("Manually labeled public-event JSON",type=["json"],key="intel_labels")
+            if uploaded:
+                try:
+                    parsed=json.load(uploaded)
+                    gold=parsed.get("labels",[]) if isinstance(parsed,dict) else parsed
+                    if not isinstance(gold,list) or any(not isinstance(e,dict) for e in gold):
+                        raise ValueError("Expected a list of labeled event objects")
+                    scores=evaluate_labeled(gold,all_events)
+                    if scores["status"]=="not_measured":
+                        st.info(scores["reason"])
+                    else:
+                        st.json(scores)
+                        st.caption("Scores apply ONLY to the uploaded labels and current database, not general SEC accuracy.")
+                except Exception as exc:
+                    st.error("Could not evaluate labels: "+str(exc))
+            st.markdown("**Limits:** Source-normalized offsets do not guarantee precise original HTML anchors. Fund share-class attribution and effective dates remain subject to validation.")
