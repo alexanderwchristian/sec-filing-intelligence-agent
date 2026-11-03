@@ -20,6 +20,14 @@ from filing_intel.reporting import to_markdown
 from filing_intel.sec import SecClient
 
 st.set_page_config(page_title="SEC Filing Intelligence", page_icon="📑", layout="wide")
+
+# Default to the real persisted fund-and-stock dashboard.
+# The original working 10-K comparison demo remains available via this toggle.
+if st.sidebar.toggle("Fund + stock intelligence dashboard",value=True):
+    from filing_intel.intel_dashboard import render
+    render()
+    st.stop()
+
 st.markdown("""
 <style>
 .block-container {max-width: 1120px; padding-top: 2.2rem;}
