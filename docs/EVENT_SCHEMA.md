@@ -1,6 +1,6 @@
 # Canonical event, evidence and state contracts
 
-**Status:** proposed contracts for review. Names/types are examples for an initial relational schema and API, not currently shipped.
+**Status:** target contracts for review. [PR1](PR1_MONITORING.md) ships schema-version-1 issuer lexical candidates and normalized source offsets, with nullable effective dates and immutable comparison occurrences. Investigation, digest, feedback and fund identity contracts remain planned. See `examples/monitor_sample.json` for actual serialization and `store.py` for migration 1.
 
 ## Required entities
 - **WatchEntity:** `watch_id`, `jurisdiction`, `entity_type` (issuer/registrant/fund/series/class), canonical IDs and aliases, enabled categories/forms, owner, effective configuration revision.

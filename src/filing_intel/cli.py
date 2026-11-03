@@ -13,6 +13,8 @@ from .evaluate import evaluate
 from .models import Filing
 from .reporting import to_markdown
 from .sec import SecClient
+from .store import Store
+from .monitor import scan
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -37,12 +39,55 @@ def main(argv: list[str] | None = None) -> int:
     compare_files = subs.add_parser("compare", help="Compare local Item 1A sections")
     compare_files.add_argument("--old", required=True)
     compare_files.add_argument("--new", required=True)
+    watchlist = subs.add_parser("watchlist", help="Manage durable issuer watchlist")
+    watchlist.add_argument("action", choices=["add", "list", "disable"])
+    watchlist.add_argument("--company", help="Issuer CIK or ticker")
+    watchlist.add_argument("--name", help="Public issuer display name")
+    scan_cmd = subs.add_parser("scan", help="Discover and compare watched 10-K filings")
+    scan_cmd.add_argument("--since", help="Inclusive filing date; default replays monitoring window")
+    scan_cmd.add_argument("--to", help="Inclusive filing date; defaults to today (UTC)")
+    backfill = subs.add_parser("backfill", help="Replay an inclusive historical filing interval")
+    backfill.add_argument("--from", dest="since", required=True)
+    backfill.add_argument("--to", required=True)
+    status = subs.add_parser("status", help="Full durable run/checkpoint status as JSON")
+    results = subs.add_parser("results", help="Complete evidence-linked event inventory as JSON")
+    results.add_argument("--run-id")
+    results.add_argument("--include-superseded", action="store_true")
+    for item in (watchlist, scan_cmd, backfill, status, results):
+        item.add_argument("--db", default=".filing-intel/state.sqlite3", help="Durable SQLite path")
     for item in (demo, live, compare_files):
         item.add_argument("--format", choices=["markdown", "json"], default="markdown")
         item.add_argument("--out", help="Output path; defaults to stdout")
         item.add_argument("--ai", action="store_true", help="Optional LLM interpretation, requires API key")
     args = parser.parse_args(argv)
     try:
+        if args.command in ("watchlist", "scan", "backfill", "status", "results"):
+            with Store(args.db) as store:
+                if args.command == "watchlist":
+                    if args.action != "list" and not args.company:
+                        raise ValueError("--company is required")
+                    if args.action == "add":
+                        if not args.name:
+                            raise ValueError("--name is required")
+                        if args.company.isdigit():
+                            cik, provenance = int(args.company), "user-supplied CIK; issuer identity asserted by operator"
+                        else:
+                            cik = SecClient().resolve_cik(args.company)
+                            provenance = "SEC company_tickers.json: " + args.company.upper()
+                        store.add_watch(cik, args.name, provenance)
+                    elif args.action == "disable":
+                        if not args.company.isdigit():
+                            raise ValueError("Disable by stored CIK")
+                        store.disable_watch(int(args.company))
+                    output = store.status()["watchlist"]
+                elif args.command == "status":
+                    output = store.status()
+                elif args.command == "results":
+                    output = store.results(run_id=args.run_id, include_superseded=args.include_superseded)
+                else:
+                    output = scan(store, SecClient(), since=args.since, until=args.to, mode=args.command)
+                print(json.dumps(output, indent=2))
+                return 0 if not isinstance(output, dict) or output.get("status", "completed") == "completed" else 2
         if args.command == "evaluate":
             print(json.dumps(evaluate(args.fixtures), indent=2))
             return 0
@@ -72,3 +117,4 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
