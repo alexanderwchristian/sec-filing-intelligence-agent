@@ -1,0 +1,11 @@
+.git
+.env
+.env.*
+!.env.example
+.venv
+runtime
+.filing-intel
+__pycache__
+.pytest_cache
+*.sqlite*
+*.db*

@@ -2,7 +2,7 @@
 
 **Product scope:** US SEC EDGAR filings for (1) registered investment funds, including mutual funds and ETFs, and (2) public companies and their publicly traded securities. **Do not implement UK, UCITS, Singapore, non-US regulators, unrelated general news, or a global regulatory crawler.** Scope is a user-configured watchlist, not every EDGAR accession.
 
-**Current reality:** Only 10-K Item 1A issuer comparison and its local durable monitoring are implemented. Everything below marked target is not working until tested with public filings. The existing static GitHub Pages demo is fictional, not a live monitor.
+**Current reality:** The Stage 1 issuer monitor supports 10-K Item 1A. The v2 local workspace implements general-source candidate extraction for listed 10-K/10-Q/8-K and fund prospectus families; it does NOT yet demonstrate high-quality, form-specific, manually validated event accuracy or complete share-class disambiguation. Supported forms require public acceptance tests. The existing static GitHub Pages demo is fictional, not a live monitor.
 
 ## Stock / public-company filings
 

@@ -10,6 +10,33 @@ This is a **personal, independently implemented portfolio project** using public
 
 <img src="docs/demo-preview.png" alt="SEC Filing Intelligence portfolio browser demo screenshot" width="900">
 
+
+## Fund + stock intelligence workspace (local runnable)
+
+The v2 implementation includes a persisted watchlist for **US SEC mutual
+fund/ETF filings and public-company stock filings**, source-linked category
+change candidates, a combined Streamlit dashboard, optional bounded AI
+investigations, daily Markdown briefings, and a single-host SMTP scheduler.
+It is **not automatically deployed** and its detection accuracy is not
+yet established on a broad labeled public-filings benchmark.
+
+Quick start:
+
+    python -m pip install -e '.[ui,ai,dev]'
+    export SEC_USER_AGENT="Your Name your-real-contact-email"
+    streamlit run app.py
+
+The fund + stock dashboard opens by default. You can add fund or stock
+CIKs, scan official SEC submissions, examine findings and citations,
+investigate selected events, and prepare a daily briefing. The original
+10-K comparison remains accessible through the sidebar toggle.
+
+Production-style local deployment with persistent storage and optional
+SMTP email is documented in [DEPLOYMENT.md](docs/DEPLOYMENT.md). The
+public GitHub Pages demo remains **fictional and static**. All fund
+share-class attribution, materiality and effective dates require human
+verification; suspected changes are labeled **candidates**.
+
 ## Browser demo
 
 The [recruiter-friendly browser walkthrough](https://alexanderwchristian.github.io/sec-filing-intelligence-agent/) visualizes a **precomputed, fictional** output of the Python detector. It runs as static GitHub Pages (no API keys or SEC rate limits). The Streamlit app below runs live retrieval and actual comparisons. To publish the static demo, enable GitHub Pages from the `main` branch `/docs` folder after pushing the repo.
@@ -110,13 +137,13 @@ Next research milestones are (1) a manually labeled public 10-K evaluation set, 
 
 ## Current limitations
 
-- The live prototype supports **Form 10-K, Item 1A only**. It does not currently monitor fund prospectuses, fee tables, portfolio managers, or other fund-specific disclosure types.
+- The original pairwise comparison mode is limited to **Form 10-K, Item 1A**. The separate v2 intelligence workspace supports selected US fund prospectuses and stock filing families as unverified category candidates; it does not yet provide reliable fund-class-level semantic event detection.
 - SEC filings are not uniformly formatted. Some HTML and table-of-contents structures may cause extraction errors or missed paragraphs.
 - Similar wording can describe different risks and different wording can describe the same risk. Reordering, boilerplate, and paraphrases are hard cases.
 - The risk attention tier is based on keywords, **not materiality, prediction, or investment recommendation**.
 - Evidence URLs point to the original **filing**, not to a guaranteed in-page paragraph anchor. Use the excerpt to find the text in the filing.
 - Public EDGAR availability and rate limits can affect live retrieval. The synthetic demo always works offline.
-- This prototype does not run continuously, store alerts, or claim production-grade recall.
+- The original prototype did not run continuously. The v2 workspace includes code for daily scheduled monitoring and email, but requires a persistent deployment and credentials. Neither mode claims production-grade recall.
 
 ## Project structure
 
@@ -133,11 +160,11 @@ tests/                       Unit and mocked SEC integration tests
 .github/workflows/tests.yml  Automated tests on three Python versions (included in project package; verify uploaded GitHub dotfiles)
 ```
 
-## Planned v2: US fund and stock filing research agent (not yet fully implemented)
+## V2 architecture and remaining validation (implemented locally, not production-certified)
 
 **Stage 1, PR1 now adds local durable issuer monitoring:** configurable CIK/ticker watchlist, complete accession inventory with incremental document retrieval, immutable SQLite history, 10-K Item 1A comparison, backfill/recovery and JSON status/results. See [setup, decisions, measured tests and remaining live gate](docs/PR1_MONITORING.md). Amendment analysis, other forms, research, scheduling and email remain planned. The live SEC acceptance rehearsal passed on one Apple annual filing pair; broader real-world evaluation remains outstanding.
 
-The next iterations will analyze amendments and additional forms, detect fund events, perform bounded evidence-backed investigation, and deliver a daily research briefing. **These expanded capabilities remain specifications.**
+V2 adds category-based fund/stock candidate extraction, bounded investigation, dashboard and daily briefing code. Coverage remains intentionally conservative. A broad, manually labeled SEC benchmark, section-level fund-class attribution, and unattended delivery acceptance testing are still needed before production claims.
 
 - [Product requirements and acceptance criteria](docs/PRODUCT_REQUIREMENTS.md)
 - [Filing coverage and phased jurisdictions](docs/FILING_COVERAGE.md)
@@ -149,7 +176,7 @@ The next iterations will analyze amendments and additional forms, detect fund ev
 - [Verified current state versus planned scope](docs/SOURCE_CONTEXT.md)
 - [Codex instructions](AGENTS.md)
 
-Before coding new features, review entity identity, first supported fund forms, durable storage, digest delivery choices and evidence requirements.
+To deploy and validate the implemented v2 workspace, follow [the deployment and acceptance guide](docs/DEPLOYMENT.md).
 
 ## Why this product
 

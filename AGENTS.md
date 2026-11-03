@@ -4,8 +4,8 @@ This is an independently implemented, public-data research portfolio project. **
 
 ## Non-negotiable rules
 - Do not copy or reconstruct any employer-owned source code, prompts, datasets, documents, architecture diagrams, or production credentials. Use public filings, fictional examples, and independent implementation.
-- Don't describe planned features as working. The current Python MVP compares two 10-K Item 1A sections and has no persistent daily monitor.
-- Preserve existing CLI, tests, and UI unless a reviewed migration replaces them. Change one vertical slice at a time; propose tests before coding.
+- Don't describe planned features as deployed. The legacy prototype compares two 10-K Item 1A sections. The v2 workspace implements local fund/stock candidate monitoring, UI, research and scheduler code, but lacks hosted deployment and broad public-filing accuracy validation.
+- Preserve the original CLI, tests, and 10-K comparison UI alongside the new shared fund/stock workspace unless a reviewed migration replaces them. Change one vertical slice at a time; propose tests before coding.
 - Deterministic tools own discovery, retrieval, parsing, identity mapping, versioning, diffing, persistence, delivery and evidence validation. Models may classify, interpret and plan bounded investigation steps, not invent filing facts.
 - Every factual finding must trace to an accessible source document, accession, exact quote/span and its comparison baseline. Distinguish text change, semantic change, newly filed event, and investment significance.
 - Never silently truncate results or convert retrieval/parse failures to 'no changes'. Keep complete machine-readable results and explicit partial-run status.

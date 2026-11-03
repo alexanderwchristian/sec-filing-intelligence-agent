@@ -1,6 +1,6 @@
 # Target architecture and agent boundaries
 
-**Status:** target architecture; [PR1](PR1_MONITORING.md) implements the issuer 10-K discovery/storage/parse/baseline/detection slice in `monitor.py` and `store.py`, reusing existing modules. Other components remain proposed.
+**Status:** target architecture and local v2 implementation. Stage 1 issuer 10-K runs in monitor.py/store.py. V2 modules intel_store.py, intel_monitor.py, categories.py, intel_semantic.py, intel_research.py, intel_digest.py, intel_scheduler.py and intel_dashboard.py provide the separate fund/stock path, pending live acceptance. Deployment and broad labeled accuracy remain unverified.
 
 **Hard product boundary:** Two US SEC entity tracks only: (1) mutual fund / ETF filings and (2) public-company stock filings. Shared discovery, persisted events, investigation, UI and digest; separate form-specific parsers and detectors. See [FILING_COVERAGE.md](FILING_COVERAGE.md). The application is not complete until both tracks reach the shared live dashboard and daily delivery.
 
