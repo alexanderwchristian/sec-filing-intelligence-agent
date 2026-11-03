@@ -1,6 +1,6 @@
 # Codex repository instructions
 
-This is an independently implemented, public-data research portfolio project. Read `docs/PRODUCT_REQUIREMENTS.md`, `docs/FILING_COVERAGE.md`, `docs/EVENT_SCHEMA.md`, `docs/ARCHITECTURE.md`, `docs/EVALUATION.md`, `docs/OPERATIONS.md`, and `docs/IMPLEMENTATION_PLAN.md` before proposing a scope-changing edit. Use `docs/SOURCE_CONTEXT.md` to distinguish prior reference-system characteristics from independently implemented functionality.
+This is an independently implemented, public-data research portfolio project. **Hard scope: US SEC EDGAR filings for two tracks only, investment funds (mutual funds and ETFs) and public-company stocks.** Do not build UK/UCITS/Singapore regulatory ingestion, a general news crawler or unrelated domains. Read `docs/FILING_COVERAGE.md` for exact coverage and support status. Read `docs/PRODUCT_REQUIREMENTS.md`, `docs/FILING_COVERAGE.md`, `docs/EVENT_SCHEMA.md`, `docs/ARCHITECTURE.md`, `docs/EVALUATION.md`, `docs/OPERATIONS.md`, and `docs/IMPLEMENTATION_PLAN.md` before proposing a scope-changing edit. Use `docs/SOURCE_CONTEXT.md` to distinguish prior reference-system characteristics from independently implemented functionality.
 
 ## Non-negotiable rules
 - Do not copy or reconstruct any employer-owned source code, prompts, datasets, documents, architecture diagrams, or production credentials. Use public filings, fictional examples, and independent implementation.

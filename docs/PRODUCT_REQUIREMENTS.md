@@ -3,7 +3,9 @@
 **Status:** proposed v2 specification; **implementation:** pairwise comparison plus [Stage 1, PR1 local durable 10-K monitoring](PR1_MONITORING.md). Broader coverage, unattended operation, investigation and delivery remain planned.
 
 ## Product promise
-For an analyst's defined watchlist, discover new relevant regulatory disclosures, detect and normalize changes, investigate likely implications using cited public sources, and deliver a trustworthy daily research briefing. Primary job: reduce missed changes and analyst review time without replacing research judgment.
+For a US SEC watchlist of **funds (mutual funds/ETFs) and public-company stocks only**, discover new relevant SEC disclosures, detect and normalize changes, investigate likely implications using cited public sources, and deliver a trustworthy daily research briefing. Primary job: reduce missed changes and analyst review time without replacing research judgment.
+
+**Non-negotiable MVP:** Both filing tracks, a functional interactive dashboard, a combined daily briefing, bounded AI research follow-ups, and durable recovery must work end to end. Back-end-only monitoring is an intermediate development increment, not a delivered product. See [US filing coverage](FILING_COVERAGE.md).
 
 ## Users and jobs
 1. **Fund research analyst:** track fee, investment objective, portfolio-manager, benchmark, fund status and product changes; find effective dates and affected share classes/series.
@@ -31,8 +33,8 @@ For an analyst's defined watchlist, discover new relevant regulatory disclosures
 | FR-07 | P0 | Run audit/recovery | Durable checkpoints, retry/backfill, source outages represented explicitly |
 | FR-08 | P1 | Bounded tool-using investigation | Tool calls and citations captured; next-step suggestions are hypotheses, not investment actions |
 | FR-09 | P1 | Feedback and evaluation | Reviewer labels, strict/relaxed event scores, groundedness, coverage, error taxonomy and run cost |
-| FR-10 | P1 | Interactive UI | Watchlist management, report review, cited before/after diffs, run status and manual rerun |
-| FR-11 | P2 | Multi-jurisdiction connector support | UK/UCITS/Singapore data only after sources and permissions validated |
+| FR-10 | P0 | Interactive UI | Both fund and stock watchlists, combined event feed, filtering, cited before/after diffs, run status and manual rerun |
+| FR-11 | P0 | Exactly two SEC entity tracks | Mutual funds/ETFs and public-company stocks share the same user experience; detector and parser coverage is tracked separately |
 
 ## Digest contract
 Header includes reporting window, timezone, monitored entities, complete/partial/failed status, count of discovered/processed/failed filings, and a run ID. Each finding includes issuer/fund, form/date/accession, event type, change category, effective date (known/unknown), before/after evidence, concise summary, why review, confidence/uncertainty, and 1-3 precise questions/actions for further research. Separate 'newly detected' from 'previously detected but updated/corrected'. Include direct links to primary documents. No recommendations to buy/sell or claims of verified investment materiality.
@@ -50,8 +52,8 @@ Header includes reporting window, timezone, monitored entities, complete/partial
 - **Accessibility:** HTML digest readable as plain text; CLI and Markdown usable without web UI.
 - **Recoverability:** missed schedule, partial failures, repeats and amended filings handled without lost changes or duplicate notifications.
 
-## Explicit out of scope for initial release
-Automated trading; price targets; personalized investment advice; unrestricted web browsing; full-text search across every global regulator; fully automated legal conclusions; production SLAs before reliable operation is measured.
+## Explicit out of scope for the product
+Automated trading; price targets; personalized investment advice; unrestricted web browsing; UK/UCITS/Singapore or other non-US regulatory feeds; full-text search across every global regulator; fully automated legal conclusions; production SLAs before reliable operation is measured.
 
 ## Review decisions
-Select initial watchlist (recommend 5-10 entities spanning fund and issuer forms), timezone/digest hour, delivery transport, deployment environment, research budget and first supported form subset before execution. See `FILING_COVERAGE.md` for phased scope, not aspirational promises.
+Select initial watchlist (recommend at least one actual US fund and one stock issuer, then expand to 5-10 across both tracks), timezone/digest hour, delivery transport, deployment environment, research budget and first supported form subset before execution. See `FILING_COVERAGE.md` for phased scope, not aspirational promises.

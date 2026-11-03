@@ -133,7 +133,7 @@ tests/                       Unit and mocked SEC integration tests
 .github/workflows/tests.yml  Automated tests on three Python versions (included in project package; verify uploaded GitHub dotfiles)
 ```
 
-## Planned v2: autonomous filing research agent (not yet implemented)
+## Planned v2: US fund and stock filing research agent (not yet fully implemented)
 
 **Stage 1, PR1 now adds local durable issuer monitoring:** configurable CIK/ticker watchlist, complete accession inventory with incremental document retrieval, immutable SQLite history, 10-K Item 1A comparison, backfill/recovery and JSON status/results. See [setup, decisions, measured tests and remaining live gate](docs/PR1_MONITORING.md). Amendment analysis, other forms, research, scheduling and email remain planned. The live SEC acceptance rehearsal passed on one Apple annual filing pair; broader real-world evaluation remains outstanding.
 
