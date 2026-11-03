@@ -183,3 +183,13 @@ To deploy and validate the implemented v2 workspace, follow [the deployment and 
 Investment analysts can spend substantial time reviewing recurring disclosures. The design goal is to **reduce the first-pass review burden without hiding the supporting documents**. A useful first prototype should prioritize auditable evidence, understandable failure modes, and a workflow that helps a human decide what to inspect next.
 
 **Built as an independent portfolio prototype.** No affiliation with or endorsement by the U.S. Securities and Exchange Commission. Not investment advice.
+
+
+### Expanded stock + fund SEC pilot universe
+
+The [November 3, 2026 SEC pilot snapshot](docs/UNIVERSE_PILOT.md) covers
+503 securities from 500 distinct S&P 500 companies and 50 distinct fund
+series across 40 ETFs and 10 mutual funds. SEC identities must be freshly
+verified before loading. Scans are manually batched, and per-run coverage
+is explicit. A loaded watchlist is not real-world event accuracy evidence.
+No paid API, hosting, automatic daily AI or deployment is enabled.
