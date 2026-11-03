@@ -68,6 +68,16 @@ CREATE TABLE IF NOT EXISTS intel_digests (
 CREATE TABLE IF NOT EXISTS intel_checkpoints (
     watch_id TEXT PRIMARY KEY, through_date TEXT NOT NULL, updated_at TEXT NOT NULL
 );
+CREATE TRIGGER IF NOT EXISTS intel_filing_immutable_update BEFORE UPDATE ON intel_filings
+BEGIN SELECT RAISE(ABORT, 'stored SEC filings are immutable'); END;
+CREATE TRIGGER IF NOT EXISTS intel_filing_immutable_delete BEFORE DELETE ON intel_filings
+BEGIN SELECT RAISE(ABORT, 'stored SEC filings are immutable'); END;
+CREATE TRIGGER IF NOT EXISTS intel_event_immutable_update BEFORE UPDATE ON intel_events
+BEGIN SELECT RAISE(ABORT, 'detected event history is immutable'); END;
+CREATE TRIGGER IF NOT EXISTS intel_event_immutable_delete BEFORE DELETE ON intel_events
+BEGIN SELECT RAISE(ABORT, 'detected event history is immutable'); END;
+CREATE TABLE IF NOT EXISTS intel_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+INSERT OR IGNORE INTO intel_meta(key,value) VALUES('schema_version','1');
 """
 
 
@@ -230,7 +240,7 @@ class IntelStore:
         return True
 
     def events(self, *, kind: str | None = None, category: str | None = None,
-               since: str | None = None, limit: int = 1000) -> list[dict]:
+               since: str | None = None, limit: int | None = None) -> list[dict]:
         q = """SELECT e.payload_json,w.kind,w.name FROM intel_events e
                JOIN intel_watchlist w ON e.watch_id=w.watch_id WHERE 1=1"""
         args: list[object] = []
@@ -243,8 +253,10 @@ class IntelStore:
         if since:
             q += " AND substr(e.detected_at,1,10)>=?"
             args.append(since)
-        q += " ORDER BY e.detected_at DESC,e.event_id LIMIT ?"
-        args.append(limit)
+        q += " ORDER BY e.detected_at DESC,e.event_id"
+        if limit is not None:
+            q += " LIMIT ?"
+            args.append(limit)
         return [{**json.loads(r["payload_json"]),"kind":r["kind"],"watch_name":r["name"]}
                 for r in self.conn.execute(q,args)]
 

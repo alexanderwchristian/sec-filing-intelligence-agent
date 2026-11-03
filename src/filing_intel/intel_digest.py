@@ -19,7 +19,7 @@ def generate_briefing(store:IntelStore,day:str,*,max_display:int=35)->tuple[str,
     boundary=last_sent["created_at"] if last_sent else day+"T00:00:00"
     # Include newly detected candidates since the last successful delivery,
     # not just those filed today. Publication and detection dates differ.
-    events=[e for e in store.events(since=boundary[:10],limit=50000)
+    events=[e for e in store.events(since=boundary[:10],limit=None)
             if e["detected_at"]>=boundary]
     funds=[e for e in events if e["kind"]=="fund"]
     stocks=[e for e in events if e["kind"]=="stock"]
