@@ -11,6 +11,7 @@ import os
 import time
 
 from .intel_store import IntelStore
+from .intel_tracing import step_span, capture_response
 
 
 TOOLS = [
@@ -155,8 +156,10 @@ def investigate_event(store:IntelStore,event_id:str,*,api_key:str|None=None,
       "and say why. Never invent links, documents or sources."
     )
     try:
-        reply=client.responses.create(model=model,instructions=instructions,
-                  input=json.dumps(context),tools=TOOLS,max_output_tokens=MAX_OUTPUT_TOKENS)
+        with step_span("openai_research_model_call", {"model": model, "phase": "initial"}):
+            reply=client.responses.create(model=model,instructions=instructions,
+                      input=json.dumps(context),tools=TOOLS,max_output_tokens=MAX_OUTPUT_TOKENS)
+            capture_response(reply)
         while True:
             usage=getattr(reply,"usage",None)
             if usage:
@@ -175,15 +178,20 @@ def investigate_event(store:IntelStore,event_id:str,*,api_key:str|None=None,
                         args={}
                 except (ValueError,TypeError):
                     args={}
-                result=research_tool(store,event["watch_id"],call.name,args)
+                with step_span("research_read_only_tool", {"tool": call.name,
+                                                       "watch_id": event["watch_id"]}):
+                    result=research_tool(store,event["watch_id"],call.name,args)
                 outputs.append({"type":"function_call_output","call_id":call.call_id,
                                 "output":json.dumps(result)})
                 tool_calls+=1
-            reply=client.responses.create(model=model,instructions=instructions,
-                        previous_response_id=reply.id,input=outputs,
-                        tools=TOOLS,max_output_tokens=MAX_OUTPUT_TOKENS)
+            with step_span("openai_research_model_call", {"model": model, "phase": "tool_followup"}):
+                reply=client.responses.create(model=model,instructions=instructions,
+                            previous_response_id=reply.id,input=outputs,
+                            tools=TOOLS,max_output_tokens=MAX_OUTPUT_TOKENS)
+                capture_response(reply)
         value=_load_json(reply.output_text)
-        observations=_verify_observations(store,event,value.get("observations",[]))
+        with step_span("verify_research_quotes", {"event_id": event_id}):
+            observations=_verify_observations(store,event,value.get("observations",[]))
         summary=str(value.get("summary","")).strip()[:650]
         follow_ups=[str(v)[:250] for v in value.get("follow_ups",[])
                     if isinstance(v,str) and v.strip()][:3]
