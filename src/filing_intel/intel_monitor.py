@@ -2,12 +2,14 @@
 from __future__ import annotations
 
 from datetime import date, timedelta, datetime, timezone
+import os
 from typing import Any
 
 from .categories import (FUND_FORMS, STOCK_FORMS, FORM_FAMILIES,
                          canonical_text, detect_events, identity_status)
 from .intel_store import IntelStore
 from .sec import SecClient, archive_url
+from .intel_semantic import review_candidates
 
 
 def _date(value: str | None, default: date) -> date:
@@ -129,6 +131,15 @@ def scan_intelligence(store: IntelStore, client: SecClient, *,
                         # A prospectus for a multi-fund registrant is still review-only.
                         # The classifier does not claim verified fund/class attribution.
                         events=detect_events(watch,current,baseline)
+                        if os.getenv("USE_SEMANTIC_DETECTORS","0")=="1":
+                            events,semantic_warnings=review_candidates(events)
+                            if semantic_warnings:
+                                watch_failed=True
+                                errors.extend(watch["name"]+" "+record.accession+": "+warning
+                                              for warning in semantic_warnings)
+                        else:
+                            for event in events:
+                                event["semantic_review"]={"status":"disabled"}
                         for event in events:
                             event["baseline_reason"]=baseline_reason
                             if store.put_event(event):
