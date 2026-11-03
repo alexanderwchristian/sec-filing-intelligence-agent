@@ -93,14 +93,29 @@ def render() -> None:
                 since=st.date_input("From filing date",date.today()-timedelta(days=90),key="scan_since")
             with c2:
                 until=st.date_input("Through filing date",date.today(),key="scan_until")
-            if st.button("Scan watchlist now",type="primary",disabled=not active):
+            batch_watch_ids=None
+            if len(active)>25:
+                st.info("Large watchlist: run bounded batches of at most 25 watches. "
+                        "One completed batch does NOT mean all watches were scanned.")
+                batch_size=st.selectbox("Watches per batch",[5,10,20,25],index=1)
+                n_batches=(len(active)+batch_size-1)//batch_size
+                batch_number=st.number_input("Batch number (1-based)",min_value=1,
+                                              max_value=n_batches,value=1)
+                selected=active[(batch_number-1)*batch_size:batch_number*batch_size]
+                batch_watch_ids=[w["watch_id"] for w in selected]
+                st.caption(str(len(selected))+" of "+str(len(active))+
+                           " enabled watches in selected batch "+str(batch_number)+
+                           " of "+str(n_batches)+". Run all batches for full coverage.")
+            if st.button("Scan selected batch" if batch_watch_ids else "Scan watchlist now",
+                         type="primary",disabled=not active):
                 try:
                     with st.spinner("Discovering, retrieving and analyzing official SEC filings..."):
                         result=scan_intelligence(store,SecClient(),
                                   since=since.isoformat(),until=until.isoformat(),
-                                  mode="on_demand")
+                                  mode="on_demand",watch_ids=batch_watch_ids)
                     if result["status"]=="completed":
-                        st.success("Scan completed.")
+                        st.success("Selected scan scope completed. Check coverage before "
+                                   "claiming the full watchlist was analyzed.")
                     else:
                         st.error("Scan partially completed. Inspect Run Health.")
                     st.json(result)

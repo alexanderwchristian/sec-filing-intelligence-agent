@@ -192,3 +192,12 @@ real SEC discovery/baseline/replay gates, explicit opt-in tracing, no-cost
 daily operation, and the distinction between green CI and actual live evidence.
 The manual [live acceptance workflow](.github/workflows/pilot-live-acceptance.yml)
 never calls an AI model and produces a reviewable JSON report.
+
+### Expanded stock + fund SEC pilot universe
+
+The [November 3, 2026 SEC pilot snapshot](docs/UNIVERSE_PILOT.md) covers
+503 securities from 500 distinct S&P 500 companies and 50 distinct fund
+series across 40 ETFs and 10 mutual funds. SEC identities must be freshly
+verified before loading. Scans are manually batched, and per-run coverage
+is explicit. A loaded watchlist is not real-world event accuracy evidence.
+No paid API, hosting, automatic daily AI or deployment is enabled.
