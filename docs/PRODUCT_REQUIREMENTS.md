@@ -1,6 +1,6 @@
 # Product requirements: SEC Filing Intelligence Agent
 
-**Status:** proposed v2 specification; **implementation:** current 10-K Item 1A comparison MVP only.
+**Status:** proposed v2 specification; **implementation:** pairwise comparison plus [Stage 1, PR1 local durable 10-K monitoring](PR1_MONITORING.md). Broader coverage, unattended operation, investigation and delivery remain planned.
 
 ## Product promise
 For an analyst's defined watchlist, discover new relevant regulatory disclosures, detect and normalize changes, investigate likely implications using cited public sources, and deliver a trustworthy daily research briefing. Primary job: reduce missed changes and analyst review time without replacing research judgment.

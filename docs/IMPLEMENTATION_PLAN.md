@@ -1,6 +1,6 @@
 # Implementation plan: reviewable vertical slices
 
-**Status:** planning only. Do not implement stages below until specs are reviewed. Existing CLI and Streamlit comparison workflows must remain functional.
+**Status:** Stage 1, PR1 local 10-K monitoring slice implemented for review; single-issuer public-source replay rehearsal passed. [Implementation, validation, scope and rollback](PR1_MONITORING.md). Later PRs/stages remain planned. Existing CLI and Streamlit comparison workflows remain functional.
 
 ## Stage 0: baseline and specification signoff
 - Validate repository vs README; make CI and `.gitignore` actually present in GitHub (they were missing from the inspected remote despite existing in an earlier local package).

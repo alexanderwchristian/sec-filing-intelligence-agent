@@ -1,6 +1,6 @@
 # Target architecture and agent boundaries
 
-**Status:** proposed, not implemented. Current MVP files: `sec.py`, `parser.py`, `detect.py`, `ai.py`, `evaluate.py`, `reporting.py`, `cli.py`, and `app.py`.
+**Status:** target architecture; [PR1](PR1_MONITORING.md) implements the issuer 10-K discovery/storage/parse/baseline/detection slice in `monitor.py` and `store.py`, reusing existing modules. Other components remain proposed.
 
 ## Primary pipeline
 ```mermaid

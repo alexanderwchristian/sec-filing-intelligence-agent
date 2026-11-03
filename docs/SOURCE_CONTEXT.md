@@ -7,7 +7,7 @@ This document avoids confusing a prior employer-system reference with the indepe
 - Detector (`detect.py`) segments and aligns text by token overlap/sequence similarity; categorizes added/revised/removed candidates and keyword attention. It caps default returned changes at 20 and limits long sections to 350 segments, with warnings.
 - `ai.py` optionally adds short model interpretations to at most five findings, requiring returned evidence substrings to match supplied text. It does not provide tools or independent investigation.
 - CLI offers synthetic demo, live pairwise analysis, local comparison and a five-scenario synthetic evaluator. The Streamlit UI and static fictional GitHub Pages walkthrough are separate experiences.
-- No incremental filing monitor, durable event store, daily email, multi-form fund detector, or autonomous research loop exists yet.
+- Stage 1, PR1 adds a manual local 10-K monitor and immutable SQLite event/document history, with deterministic mocked recovery tests. See [actual scope and validation](PR1_MONITORING.md); real-source discovery/comparison/storage/replay passed on one Apple annual pair. No daily email, multi-form fund detector or autonomous research loop exists yet.
 
 ## B. Product-owner design priorities (high-level, independently specified)
 The owner requested an expanded fund research workflow informed by prior professional experience. The following are product *requirements and design inspirations*, not public descriptions of employer systems or their source code:

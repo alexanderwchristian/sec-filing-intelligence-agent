@@ -14,3 +14,11 @@ build/
 .streamlit/secrets.toml
 .DS_Store
 *.log
+.filing-intel/
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+*.lock
+

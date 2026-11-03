@@ -2,6 +2,8 @@
 
 **Status:** planned v2 evaluation. The existing `examples/evaluation_cases.json` includes 5 synthetic detector regressions, not a real-world accuracy estimate.
 
+[PR1 verification](PR1_MONITORING.md) records 32 passing deterministic tests and an offline end-to-end CLI replay with fictional sources. A separate real SEC rehearsal passed on one Apple annual pair, including all 131 quoted normalized spans and idempotent replay. These checks do not measure general event accuracy.
+
 ## Evaluation units
 1. **Filing discovery:** true new/eligible accessions within the watched universe and interval; amendment capture, timeliness, duplicate rate and missed-window recovery.
 2. **Parsing/identity:** correct fund, share-class, issuer, section and original source span; count failures, ambiguous identities and wrong baselines.

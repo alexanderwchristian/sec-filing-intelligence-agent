@@ -52,7 +52,8 @@ def _explanation(kind: str) -> str:
     return "No close text match was found in the current filing. Review the previous passage."
 
 
-def compare(old: Filing, new: Filing, *, max_changes: int = 20,
+def compare(old: Filing, new: Filing, *, max_changes: int | None = 20,
+            max_segments: int | None = 350,
             change_threshold: float = 0.87, match_threshold: float = 0.49) -> Report:
     """Compare extracted sections using one-to-one alignment, without hallucinated evidence.
 
@@ -62,7 +63,7 @@ def compare(old: Filing, new: Filing, *, max_changes: int = 20,
         raise ValueError("Compare documents with the same filing form")
     if not (0 < match_threshold < change_threshold < 1):
         raise ValueError("Similarity thresholds must be between 0 and 1 and ordered")
-    if max_changes < 1:
+    if max_changes is not None and max_changes < 1:
         raise ValueError("max_changes must be positive")
 
     before = segment(old.text)
@@ -72,9 +73,11 @@ def compare(old: Filing, new: Filing, *, max_changes: int = 20,
 
     report = Report(company=new.company, old_date=old.filing_date,
                     new_date=new.filing_date, old_url=old.source_url, new_url=new.source_url)
-    if len(before) > 350 or len(after) > 350:
-        report.warnings.append("Large section: only the first 350 text units were compared")
-        before, after = before[:350], after[:350]
+    if max_segments is not None and max_segments < 1:
+        raise ValueError("max_segments must be positive")
+    if max_segments is not None and (len(before) > max_segments or len(after) > max_segments):
+        report.warnings.append(f"Large section: only the first {max_segments} text units were compared")
+        before, after = before[:max_segments], after[:max_segments]
 
     # Globally align the strongest pairs first to reduce noisy one-to-many matches.
     candidate_pairs: list[tuple[float, int, int]] = []
@@ -118,7 +121,8 @@ def compare(old: Filing, new: Filing, *, max_changes: int = 20,
     events.sort(key=lambda event: (priority[event.attention], kind_order[event.change_type],
                                    event.new_quote[:50] or event.old_quote[:50]))
     report.changes = events[:max_changes]
-    if len(events) > max_changes:
+    if max_changes is not None and len(events) > max_changes:
         report.warnings.append(f"Showing top {max_changes} of {len(events)} candidate changes")
     report.warnings.append("Attention tiers are keyword heuristics; not legal or financial materiality judgments")
     return report
+

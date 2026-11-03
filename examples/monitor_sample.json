@@ -1,0 +1,210 @@
+{
+  "fixture_kind": "fictional; mocked SEC transport; URLs are illustrative, not real filings",
+  "first_run": {
+    "run_id": "ddd61fc9-5676-4815-ad1d-ec011caeb53a",
+    "status": "completed",
+    "window_start": "2025-01-01",
+    "window_end": "2025-12-31",
+    "discovered": 2,
+    "eligible": 1,
+    "processed": 1,
+    "first_seen": 0,
+    "excluded": 0,
+    "parse_failures": 0,
+    "fetch_failures": 0,
+    "analysis_failures": 0,
+    "discovery_failures": 0,
+    "errors": [],
+    "coverage": "10-K Item 1A only; amendments and other forms inventoried but excluded"
+  },
+  "replay_run": {
+    "run_id": "e7865c9e-6f4f-46d6-9b11-3b637d66a3fb",
+    "status": "completed",
+    "window_start": "2025-01-01",
+    "window_end": "2025-12-31",
+    "discovered": 0,
+    "eligible": 1,
+    "processed": 1,
+    "first_seen": 0,
+    "excluded": 0,
+    "parse_failures": 0,
+    "fetch_failures": 0,
+    "analysis_failures": 0,
+    "discovery_failures": 0,
+    "errors": [],
+    "coverage": "10-K Item 1A only; amendments and other forms inventoried but excluded"
+  },
+  "unique_events": 3,
+  "idempotent_replay": true,
+  "checkpoint": "2025-12-31",
+  "events": [
+    {
+      "schema_version": 1,
+      "event_id": "63d6fbbb04a30fc3da1d6f4b6dfe81d8d2bbb3227b4f8a981e6c20dad7b3849e",
+      "fingerprint": "5132c1ce8148985d6721dd5e664bae1b3ab45eb4c662d6345eb4e21abc2e02b4",
+      "entity_ids": {
+        "jurisdiction": "US",
+        "cik": "0000000001",
+        "entity_type": "issuer",
+        "series_id": null,
+        "class_id": null
+      },
+      "category": "issuer_risk",
+      "subtype": "wording_change",
+      "change_type": "revised",
+      "status": "candidate",
+      "accession": "0000000001-25-000001",
+      "baseline_accession": "0000000001-24-000001",
+      "baseline_reason": "prior annual 10-K with earlier filing date and distinct earlier report period",
+      "comparison_id": "48f17a15690d8c2a0d372c40d45bdc08987d2d81fc3c85e0b400e0e148b0e319",
+      "supersedes_comparison_ids": [],
+      "comparison_method": "risk-text-v1-untruncated",
+      "model_version": null,
+      "old_value": "Our subscription revenue depends on customer retention, and we may experience slower growth if customers reduce usage of the Northstar platform. Customer budgets for technology products may change during economic downturns, which could reduce demand for our services and affect revenue growth. Our cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers. We compete with large cloud infrastructure providers and smaller specialist vendors. Increased competition may require us to lower prices or increase spending on product development, affecting our operating margins and ability to attract new customers.",
+      "new_value": "Our subscription revenue depends on customer retention, and we may experience slower growth if customers reduce usage of the Northstar platform. Customer budgets for technology products may change during economic downturns, which could reduce demand for our services and affect revenue growth. Our cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers. We now rely on a single regional data center partner for our largest enterprise workload and have not secured a fully redundant alternative. We compete with large cloud infrastructure providers and smaller specialist vendors.",
+      "effective_date": null,
+      "effective_date_basis": "not_extracted",
+      "event_date": null,
+      "filing_date": "2025-02-01",
+      "review_priority": "medium",
+      "detected_at": "2026-11-03T01:32:52.406278+00:00",
+      "uncertainties": [
+        "Lexical candidate; economic significance not verified",
+        "Offsets refer to normalized document, not raw HTML"
+      ],
+      "related_event_ids": [],
+      "evidence": {
+        "old": {
+          "doc_id": "sec:0000000001:0000000001-24-000001:296b9092d06a66680296d1910ddb4f8dae7991fcba5b514e7b148508804064f9",
+          "accession": "0000000001-24-000001",
+          "content_sha256": "296b9092d06a66680296d1910ddb4f8dae7991fcba5b514e7b148508804064f9",
+          "parser_version": "item1a-normalized-v1",
+          "section_path": "Item 1A Risk Factors",
+          "start_offset": 22,
+          "end_offset": 816,
+          "quote": "Our subscription revenue depends on customer retention, and we may experience slower growth if customers reduce usage of the Northstar platform. Customer budgets for technology products may change during economic downturns, which could reduce demand for our services and affect revenue growth. Our cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers. We compete with large cloud infrastructure providers and smaller specialist vendors. Increased competition may require us to lower prices or increase spending on product development, affecting our operating margins and ability to attract new customers.",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1/000000000124000001/fictional.htm",
+          "locator_quality": "normalized_document_offset",
+          "exact_original_excerpt": null
+        },
+        "new": {
+          "doc_id": "sec:0000000001:0000000001-25-000001:884df0993e278ab75e3165a4decf79a7d998b59e940859ec5278db650a56cc24",
+          "accession": "0000000001-25-000001",
+          "content_sha256": "884df0993e278ab75e3165a4decf79a7d998b59e940859ec5278db650a56cc24",
+          "parser_version": "item1a-normalized-v1",
+          "section_path": "Item 1A Risk Factors",
+          "start_offset": 22,
+          "end_offset": 789,
+          "quote": "Our subscription revenue depends on customer retention, and we may experience slower growth if customers reduce usage of the Northstar platform. Customer budgets for technology products may change during economic downturns, which could reduce demand for our services and affect revenue growth. Our cloud infrastructure relies on third party data center operators and network providers. Interruptions at these facilities could reduce service availability, trigger contractual penalties, and damage our relationships with enterprise customers. We now rely on a single regional data center partner for our largest enterprise workload and have not secured a fully redundant alternative. We compete with large cloud infrastructure providers and smaller specialist vendors.",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1/000000000125000001/fictional.htm",
+          "locator_quality": "normalized_document_offset",
+          "exact_original_excerpt": null
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "91be66ad532ff057f5c08a7987e444a85e2e9d51aa0440e0c0deb2ef55910b40",
+      "fingerprint": "385cae5eaf14c29c260a54e14fd924ee8705a842285bf0bb8704d0c18d277880",
+      "entity_ids": {
+        "jurisdiction": "US",
+        "cik": "0000000001",
+        "entity_type": "issuer",
+        "series_id": null,
+        "class_id": null
+      },
+      "category": "issuer_risk",
+      "subtype": "wording_change",
+      "change_type": "added",
+      "status": "candidate",
+      "accession": "0000000001-25-000001",
+      "baseline_accession": "0000000001-24-000001",
+      "baseline_reason": "prior annual 10-K with earlier filing date and distinct earlier report period",
+      "comparison_id": "48f17a15690d8c2a0d372c40d45bdc08987d2d81fc3c85e0b400e0e148b0e319",
+      "supersedes_comparison_ids": [],
+      "comparison_method": "risk-text-v1-untruncated",
+      "model_version": null,
+      "old_value": null,
+      "new_value": "Increased competition may require us to lower prices or increase spending on product development, affecting our operating margins and ability to attract new customers. During the fiscal year, our systems experienced a ransomware attack that temporarily interrupted customer reporting services. Although core operations were restored, future cyberattacks could expose confidential customer data, result in regulatory enforcement, and cause losses exceeding existing insurance limits.",
+      "effective_date": null,
+      "effective_date_basis": "not_extracted",
+      "event_date": null,
+      "filing_date": "2025-02-01",
+      "review_priority": "high",
+      "detected_at": "2026-11-03T01:32:52.406159+00:00",
+      "uncertainties": [
+        "Lexical candidate; economic significance not verified",
+        "Offsets refer to normalized document, not raw HTML"
+      ],
+      "related_event_ids": [],
+      "evidence": {
+        "old": null,
+        "new": {
+          "doc_id": "sec:0000000001:0000000001-25-000001:884df0993e278ab75e3165a4decf79a7d998b59e940859ec5278db650a56cc24",
+          "accession": "0000000001-25-000001",
+          "content_sha256": "884df0993e278ab75e3165a4decf79a7d998b59e940859ec5278db650a56cc24",
+          "parser_version": "item1a-normalized-v1",
+          "section_path": "Item 1A Risk Factors",
+          "start_offset": 790,
+          "end_offset": 1272,
+          "quote": "Increased competition may require us to lower prices or increase spending on product development, affecting our operating margins and ability to attract new customers. During the fiscal year, our systems experienced a ransomware attack that temporarily interrupted customer reporting services. Although core operations were restored, future cyberattacks could expose confidential customer data, result in regulatory enforcement, and cause losses exceeding existing insurance limits.",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1/000000000125000001/fictional.htm",
+          "locator_quality": "normalized_document_offset",
+          "exact_original_excerpt": null
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "d03f54a79723d0941badf6dfdd625179279b2d6d951850a13d3333af5d646ae5",
+      "fingerprint": "fe0b62d963a5773eb4525949addc764372671a7ee9c86493e18523472f336380",
+      "entity_ids": {
+        "jurisdiction": "US",
+        "cik": "0000000001",
+        "entity_type": "issuer",
+        "series_id": null,
+        "class_id": null
+      },
+      "category": "issuer_risk",
+      "subtype": "wording_change",
+      "change_type": "removed",
+      "status": "candidate",
+      "accession": "0000000001-25-000001",
+      "baseline_accession": "0000000001-24-000001",
+      "baseline_reason": "prior annual 10-K with earlier filing date and distinct earlier report period",
+      "comparison_id": "48f17a15690d8c2a0d372c40d45bdc08987d2d81fc3c85e0b400e0e148b0e319",
+      "supersedes_comparison_ids": [],
+      "comparison_method": "risk-text-v1-untruncated",
+      "model_version": null,
+      "old_value": "We depend on a small number of suppliers for specialized hardware components. A failure by these suppliers to deliver equipment on time could delay capacity expansion and disrupt our planned infrastructure deployment schedule.",
+      "new_value": null,
+      "effective_date": null,
+      "effective_date_basis": "not_extracted",
+      "event_date": null,
+      "filing_date": "2025-02-01",
+      "review_priority": "low",
+      "detected_at": "2026-11-03T01:32:52.406334+00:00",
+      "uncertainties": [
+        "Lexical candidate; economic significance not verified",
+        "Offsets refer to normalized document, not raw HTML"
+      ],
+      "related_event_ids": [],
+      "evidence": {
+        "old": {
+          "doc_id": "sec:0000000001:0000000001-24-000001:296b9092d06a66680296d1910ddb4f8dae7991fcba5b514e7b148508804064f9",
+          "accession": "0000000001-24-000001",
+          "content_sha256": "296b9092d06a66680296d1910ddb4f8dae7991fcba5b514e7b148508804064f9",
+          "parser_version": "item1a-normalized-v1",
+          "section_path": "Item 1A Risk Factors",
+          "start_offset": 817,
+          "end_offset": 1043,
+          "quote": "We depend on a small number of suppliers for specialized hardware components. A failure by these suppliers to deliver equipment on time could delay capacity expansion and disrupt our planned infrastructure deployment schedule.",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1/000000000124000001/fictional.htm",
+          "locator_quality": "normalized_document_offset",
+          "exact_original_excerpt": null
+        },
+        "new": null
+      }
+    }
+  ]
+}

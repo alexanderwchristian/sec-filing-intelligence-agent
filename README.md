@@ -135,7 +135,9 @@ tests/                       Unit and mocked SEC integration tests
 
 ## Planned v2: autonomous filing research agent (not yet implemented)
 
-The next product iteration will monitor a configurable watchlist, discover new and amended SEC filings, detect fund and issuer events, perform bounded evidence-backed investigation, and deliver a daily research briefing. **These capabilities are specifications, not features of the current prototype.**
+**Stage 1, PR1 now adds local durable issuer monitoring:** configurable CIK/ticker watchlist, complete accession inventory with incremental document retrieval, immutable SQLite history, 10-K Item 1A comparison, backfill/recovery and JSON status/results. See [setup, decisions, measured tests and remaining live gate](docs/PR1_MONITORING.md). Amendment analysis, other forms, research, scheduling and email remain planned. The live SEC acceptance rehearsal passed on one Apple annual filing pair; broader real-world evaluation remains outstanding.
+
+The next iterations will analyze amendments and additional forms, detect fund events, perform bounded evidence-backed investigation, and deliver a daily research briefing. **These expanded capabilities remain specifications.**
 
 - [Product requirements and acceptance criteria](docs/PRODUCT_REQUIREMENTS.md)
 - [Filing coverage and phased jurisdictions](docs/FILING_COVERAGE.md)

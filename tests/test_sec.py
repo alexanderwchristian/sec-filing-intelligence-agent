@@ -74,3 +74,59 @@ def test_invalid_ticker_fails():
     client = SecClient(user_agent="Research Admin research@somewhere.org")
     with pytest.raises(ValueError, match="ticker"):
         client.resolve_cik("../../secrets")
+
+
+
+def test_discovery_sweeps_history_and_keeps_amendments_and_other_forms(monkeypatch):
+    monkeypatch.setattr("filing_intel.sec.time.sleep", lambda _: None)
+    def rows(forms, accessions):
+        return {"form": forms, "accessionNumber": accessions,
+                "filingDate": ["2024-02-01"] * len(forms),
+                "primaryDocument": ["annual.htm"] * len(forms),
+                "reportDate": ["2023-12-31"] * len(forms)}
+    first = rows(["10-K", "10-K/A", "8-K"], ["0000000001-24-000001", "0000000001-24-000002", "0000000001-24-000003"])
+    historical = rows(["10-K"], ["0000000001-23-000001"])
+    urls = {
+        "https://data.sec.gov/submissions/CIK0000000001.json": DummyResponse({"filings": {
+            "recent": first, "files": [{"name": "CIK0000000001-submissions-001.json"},
+                                        {"name": "CIK0000000001-submissions-002.json"}]}}),
+        "https://data.sec.gov/submissions/CIK0000000001-submissions-001.json": DummyResponse(historical),
+        "https://data.sec.gov/submissions/CIK0000000001-submissions-002.json": DummyResponse(historical),
+    }
+    session = DummySession(urls)
+    client = SecClient("Research Admin research@somewhere.org", session=session)
+    found = client.discover_filings(1)
+    assert len(found) == 4 and len(session.requested) == 3
+    assert {r.form for r in found} == {"10-K", "10-K/A", "8-K"}
+    assert all(r.period_end == "2023-12-31" for r in found)
+
+
+@pytest.mark.parametrize("shard", [{}, {"form": ["10-K"], "accessionNumber": [],
+                                     "filingDate": [], "primaryDocument": []}])
+def test_discovery_rejects_incomplete_shards(shard):
+    session = DummySession({"https://data.sec.gov/submissions/CIK0000000001.json":
+                            DummyResponse({"filings": {"recent": shard}})})
+    with pytest.raises(ValueError, match="SEC submissions"):
+        SecClient("Research Admin research@somewhere.org", session=session).discover_filings(1)
+
+
+def test_sec_429_retry_is_bounded_and_403_stops(monkeypatch):
+    monkeypatch.setattr("filing_intel.sec.time.sleep", lambda _: None)
+    import requests
+    class Response(DummyResponse):
+        def raise_for_status(self):
+            if self.status_code >= 400:
+                raise requests.HTTPError(str(self.status_code))
+    response = Response({})
+    response.status_code = 429
+    url = "https://data.sec.gov/submissions/CIK0000000001.json"
+    session = DummySession({url: response})
+    client = SecClient("Research Admin research@somewhere.org", session=session)
+    with pytest.raises(requests.HTTPError):
+        client.discover_filings(1)
+    assert len(session.requested) == 3
+    session.requested.clear()
+    response.status_code = 403
+    with pytest.raises(RuntimeError, match="blocked"):
+        client.discover_filings(1)
+    assert len(session.requested) == 1
