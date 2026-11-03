@@ -123,3 +123,47 @@ exceeded budgets mark a scan partial instead of becoming no-change
 reports. Model calls cost money; default is disabled. A lexical
 detector and an LLM verdict still do NOT establish investment
 materiality or fund-class attribution.
+
+
+## Manual, zero-scheduled-charge trace and live SEC quality run
+
+The **Manual live SEC tracing and evaluation** GitHub Actions workflow is
+\`workflow_dispatch\` only. It has no cron and never invokes the model unless
+an operator explicitly checks \`run_ai\`. It runs offline tests, then fetches
+exactly two independently verified public SEC documents: the November 2,
+2026 Apple 8-K (CIK 320193, accession 0000320193-26-000024) and April 28,
+2026 Vanguard 500 Index Fund / VOO 497K (CIK 36405, series S000002839,
+class C000092055, accession 0000036405-26-000183). It computes actual
+source-quote groundedness and uploads an evaluation JSON report.
+
+Setup:
+1. GitHub repository Settings -> Secrets and variables -> Actions: add
+   \`OPENAI_API_KEY\` (already needed for optional model-based research).
+2. Add a separate Actions secret \`SEC_USER_AGENT\`: your real name, followed
+   by your actual contact email. SEC fair access requires this.
+3. Merge the workflow PR. Go to Actions -> Manual live SEC tracing and
+   evaluation -> Run workflow. Leave \`run_ai\` **unchecked** to perform a
+   completely zero-model-call acceptance first. Check it only when you
+   specifically want one traced OpenAI investigation.
+4. Download the \`sec-trace-evaluation\` report artifact from the workflow
+   run; it includes the SEC source URLs, candidate counts, exact quote
+   validation, model call token usage when enabled, and explicit status.
+
+When AI is requested, \`ENABLE_OPENAI_TRACING=1\` uses the official
+OpenAI Agents SDK to export workflow, SEC retrieval, detection, research
+model, read-only tool and source verification spans. The trace appears
+under the linked API project in OpenAI Logs -> Traces. Span metadata uses
+only IDs, names and counters, not raw filing text or secrets.
+The workflow uses a bounded single investigation with a small model
+output cap, not unrestricted batch reasoning. Usage is **not** an account
+spend ceiling: keep auto-recharge off and enforce account/project spending
+controls if you must guarantee no additional charges.
+
+**Honest metric scope:** This run proves only live retrieval and exact
+grounding on two pinned SEC documents. Without an independently and
+completely human-labeled gold set, \`labeled_event_evaluation\` remains
+\`not_measured\`. A fund registrant CIK alone is not validated class-level
+attribution. The original five synthetic cases are not a real-world F1
+estimate. Add manually labeled real data via the local CLI's \`--gold\`
+argument once a full review set exists. This is not a hosted dashboard,
+24/7 scanner, or automatic emailing deployment.
