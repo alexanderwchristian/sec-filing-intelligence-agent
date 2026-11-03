@@ -130,8 +130,24 @@ src/filing_intel/evaluate.py Synthetic regression metrics
 src/filing_intel/cli.py      Local demo, live analysis, evaluation
 examples/                    Fictional filing data and reproducible outputs
 tests/                       Unit and mocked SEC integration tests
-.github/workflows/tests.yml  Automated tests on three Python versions
+.github/workflows/tests.yml  Automated tests on three Python versions (included in project package; verify uploaded GitHub dotfiles)
 ```
+
+## Planned v2: autonomous filing research agent (not yet implemented)
+
+The next product iteration will monitor a configurable watchlist, discover new and amended SEC filings, detect fund and issuer events, perform bounded evidence-backed investigation, and deliver a daily research briefing. **These capabilities are specifications, not features of the current prototype.**
+
+- [Product requirements and acceptance criteria](docs/PRODUCT_REQUIREMENTS.md)
+- [Filing coverage and phased jurisdictions](docs/FILING_COVERAGE.md)
+- [Canonical event and evidence schema](docs/EVENT_SCHEMA.md)
+- [Architecture and agent/tool boundaries](docs/ARCHITECTURE.md)
+- [Evaluation design and release gates](docs/EVALUATION.md)
+- [Scheduling, recovery and delivery operations](docs/OPERATIONS.md)
+- [Reviewable implementation plan](docs/IMPLEMENTATION_PLAN.md)
+- [Verified current state versus planned scope](docs/SOURCE_CONTEXT.md)
+- [Codex instructions](AGENTS.md)
+
+Before coding new features, review entity identity, first supported fund forms, durable storage, digest delivery choices and evidence requirements.
 
 ## Why this product
 

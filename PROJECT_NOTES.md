@@ -1,3 +1,5 @@
+> **Historical MVP decision log.** The v2 requirements, architecture, schema and implementation plan live in [`docs/PRODUCT_REQUIREMENTS.md`](docs/PRODUCT_REQUIREMENTS.md) and the other documents linked from the README. This file describes only the original 10-K Item 1A prototype.
+
 # Product decision log
 
 ## Who is it for?
