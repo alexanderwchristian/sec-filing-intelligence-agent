@@ -3,6 +3,11 @@ name: Live fund and stock pilot acceptance
 on:
   workflow_dispatch:
     inputs:
+      first_batch:
+        description: "Verify all identities and accept only batch 0 (10 issuers + 1 fund)?"
+        type: boolean
+        required: true
+        default: false
       since:
         description: "Inclusive SEC filing start (YYYY-MM-DD)"
         type: string
@@ -32,8 +37,8 @@ jobs:
     timeout-minutes: 20
     env:
       SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
-      OPENAI_API_KEY: ${{ inputs.trace_run && secrets.OPENAI_API_KEY || '' }}
-      ENABLE_OPENAI_TRACING: ${{ inputs.trace_run && '1' || '0' }}
+      OPENAI_API_KEY: ${{ !inputs.first_batch && inputs.trace_run && secrets.OPENAI_API_KEY || '' }}
+      ENABLE_OPENAI_TRACING: ${{ !inputs.first_batch && inputs.trace_run && '1' || '0' }}
       OPENAI_AGENTS_TRACE_INCLUDE_SENSITIVE_DATA: 'false'
       USE_SEMANTIC_DETECTORS: '0'
       ENABLE_DAILY_AI_RESEARCH: '0'
@@ -51,6 +56,7 @@ jobs:
           python -m pytest
           python -m compileall -q app.py src/filing_intel
       - name: Validate live discovery, baselines, evidence and replay
+        if: ${{ !inputs.first_batch }}
         run: |
           if [ -z "$SEC_USER_AGENT" ]; then
             echo "::error::Missing SEC_USER_AGENT Actions secret."
@@ -67,11 +73,18 @@ jobs:
             --since "$START_DATE" --to "$END_DATE" \
             --db ".filing-intel/live-acceptance.sqlite3" \
             --report "artifacts/live-pilot-acceptance.json"
+      - name: Official identities and first bounded batch with replay (no models or trace export)
+        if: ${{ inputs.first_batch }}
+        run: |
+          python -m filing_intel.batch_acceptance \
+            --since "$START_DATE" --to "$END_DATE" --max-requests 120
       - name: Upload public SEC acceptance evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: live-pilot-acceptance
-          path: artifacts/live-pilot-acceptance.json
+          path: |
+            artifacts/live-pilot-acceptance.json
+            artifacts/first-batch*.json
           if-no-files-found: warn
           retention-days: 14
