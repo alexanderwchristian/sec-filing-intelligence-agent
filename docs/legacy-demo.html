@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Evidence-first SEC filing disclosure comparison demo. A public financial research product prototype by Alex Christian." />
+  <title>SEC Filing Intelligence · Product Demo</title>
+  <style>
+    :root { color-scheme:light; --navy:#091e35;--ink:#16304a;--muted:#597087;--line:#dce5ec;--blue:#1764b5;--canvas:#f5f8fb;--card:#fff;--teal:#027e73;--soft:#eff6fd; }
+    * { box-sizing:border-box; } html {scroll-behavior:smooth} body { margin:0;background:var(--canvas);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;line-height:1.5; }
+    header {background:var(--navy);color:white;} .headbar {max-width:1180px;padding:18px 24px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:14px;}
+    .brand {font-size:15px;font-weight:730;letter-spacing:-.3px;display:flex;align-items:center;gap:10px;} .mark {display:inline-flex;align-items:center;justify-content:center;width:29px;height:29px;border:1px solid #83b8ff;border-radius:8px;color:#a2d5ff;font-size:15px;}
+    nav a {font-size:13px;color:#c7d8e8;text-decoration:none;margin-left:22px;} nav a:hover {color:white;text-decoration:underline} .hero {max-width:1180px;margin:auto;padding:62px 24px 68px;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(245px,.8fr);align-items:center;gap:40px}
+    .eyebrow {display:inline-block;text-transform:uppercase;font-size:11px;letter-spacing:2px;font-weight:800;color:#8bc5ff;margin-bottom:16px;} h1 {font-size:clamp(32px,4.5vw,53px);line-height:1.1;letter-spacing:-1.8px;max-width:700px;margin:0 0 20px;} .herotext {max-width:620px;font-size:17px;color:#c5d5e3;margin:0 0 27px;}
+    .actions {display:flex;gap:12px;flex-wrap:wrap;} .btn {padding:11px 18px;border-radius:8px;border:1px solid #a8c8e9;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px} .primary {background:#c8e5ff;color:#0c345b;border-color:#c8e5ff}.primary:hover {background:#eef8ff}.ghost {background:transparent;color:#fff}.ghost:hover {background:#203f5e}
+    .heroaside {border:1px solid #486079;background:#112c46;border-radius:14px;padding:21px 24px;} .heroaside .caption {color:#94bbda;text-transform:uppercase;letter-spacing:1.6px;font-size:10px;font-weight:800;margin:0 0 12px}.heroaside strong {font-size:15px;} .heroaside p {color:#bfcede;font-size:13px;margin:8px 0 16px}.divider {height:1px;background:#34516a;margin:16px 0}
+    main {max-width:1180px;padding:0 24px 70px;margin:auto}.sectiontop {display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:31px;margin-bottom:18px}.overline{font-size:11px;text-transform:uppercase;letter-spacing:1.6px;font-weight:800;color:var(--blue)}h2 {font-size:24px;letter-spacing:-.7px;line-height:1.2;margin:7px 0}.sub {font-size:13px;color:var(--muted);margin:4px 0 0}
+    .sampletag {font-size:11px;font-weight:700;color:#70581a;background:#fff8db;border:1px solid #ecdc9a;padding:8px 11px;border-radius:8px;text-align:center}.metrics {display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:22px}.metric {background:var(--card);border:1px solid var(--line);border-radius:12px;padding:21px 22px;box-shadow:0 2px 4px rgba(8,34,63,.02)}.metric .lab {font-size:12px;color:var(--muted);font-weight:600}.metric .num {font-size:34px;line-height:1.2;font-weight:760;letter-spacing:-1px;margin-top:6px}.metric .hint {font-size:11px;color:#7b8fa2;margin-top:4px}
+    .panel {background:white;border:1px solid var(--line);border-radius:14px;box-shadow:0 3px 14px rgba(15,48,82,.035);overflow:hidden}.toolbar {padding:0 21px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:10px;flex-wrap:wrap}.tabs {display:flex;gap:28px}.tab {padding:17px 0 14px;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer}.tab[aria-selected="true"] {color:var(--blue);border-bottom-color:var(--blue)}.toolbar-actions{display:flex;align-items:center;gap:12px}.outline {font-size:12px;font-weight:700;color:var(--blue);background:white;border:1px solid #aac8e1;padding:8px 12px;border-radius:7px;cursor:pointer}.outline:hover{background:var(--soft)}.content {padding:24px}.callout {font-size:12px;color:var(--muted);border-left:3px solid #b5d0e7;background:#f5f9fc;padding:11px 13px;border-radius:4px;margin-bottom:20px}.filtergroup{display:flex;align-items:center;gap:8px;margin:0 0 15px;flex-wrap:wrap}.filter {background:#fff;border:1px solid var(--line);border-radius:22px;padding:7px 14px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer}.filter.active {background:var(--navy);border-color:var(--navy);color:white}
+    .finding {border:1px solid var(--line);border-radius:10px;margin:0 0 12px;overflow:hidden;background:white}.findinghead {width:100%;border:0;background:white;text-align:left;padding:16px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:15px}.findinghead:hover{background:#fafdff}.pill {display:inline-block;background:#edf3f8;border-radius:5px;padding:4px 7px;font-size:10px;font-weight:800;letter-spacing:.5px;vertical-align:middle;margin-right:7px}.high {background:#ffe9e7;color:#9f2622}.medium {background:#fff2d5;color:#876011}.low {background:#e6f5f1;color:#087a6c}.findingtitle {font-weight:730;font-size:14px;display:inline;}.findingmeta {font-size:12px;color:#728aa0;margin-top:7px}.chev {font-size:16px;color:#5b7b9a}.findingbody {padding:17px 18px;border-top:1px solid var(--line);background:#fafcfe}.evidencegrid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-top:14px}.evidencebox {padding:16px;background:#f1f5f9;border:1px solid #e4ecf2;border-radius:9px}.evidencebox.new {background:#f0f9f7;border-color:#d4e9e4}.label {text-transform:uppercase;font-size:11px;letter-spacing:1px;color:#647990;font-weight:800;margin-bottom:8px}.evidencebox p {font-size:13px;color:#243b50;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.missing {color:#8b9bab;font-style:italic;font-size:13px}.footerline {display:flex;justify-content:space-between;gap:12px;margin-top:18px;color:var(--muted);font-size:12px}
+    .twocol {display:grid;grid-template-columns:1fr 1fr;gap:16px}.infocard{background:#f7fafc;border:1px solid var(--line);border-radius:10px;padding:20px}.infocard h3{font-size:15px;margin:0 0 8px}.infocard p,.infocard li{font-size:13px;color:#415d77}.infocard ul{padding-left:17px}.evalstats {display:flex;gap:18px;flex-wrap:wrap;margin-bottom:17px}.evalstat {flex:1;min-width:120px;background:#f2f7fb;border-radius:10px;padding:20px}.evalstat b{font-size:28px;display:block}.evalstat span{font-size:12px;color:var(--muted)}
+    .smallprint {color:#617891;font-size:12px} footer {background:#eaf0f5;border-top:1px solid #d9e4ec;padding:24px}.footinner {max-width:1180px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:14px;color:#61758a;font-size:12px}
+    @media (max-width:800px){.hero{grid-template-columns:1fr;padding:45px 24px}.heroaside{display:none}.metrics{grid-template-columns:repeat(2,1fr)}.twocol,.evidencegrid{grid-template-columns:1fr}.sectiontop,.footinner{align-items:start;flex-direction:column}.toolbar{align-items:start;padding-right:12px}.tabs{gap:18px}nav a{margin-left:10px}}
+    @media (max-width:480px){.headbar{padding:14px 18px}.hero{padding:38px 18px 48px}main{padding:0 14px 55px}.metrics{gap:9px}.metric{padding:16px}.metric .num{font-size:28px}.content{padding:16px}h1{font-size:35px}.brand{font-size:13px}nav a{font-size:12px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="headbar">
+    <div class="brand"><span class="mark">◈</span> SEC Filing Intelligence</div>
+    <nav><a href="#demo">Demo</a><a href="#approach" id="method-nav">Methodology</a><a href="https://github.com/alexanderwchristian/sec-filing-intelligence-agent" rel="noopener" target="_blank">GitHub ↗</a></nav>
+  </div>
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Financial research · Document intelligence</div>
+      <h1>Know what changed.<br>See the evidence.</h1>
+      <p class="herotext">An auditable workflow that compares SEC risk-factor disclosures, surfaces candidate changes, and keeps analysts connected to the original filing text.</p>
+      <div class="actions"><a href="#demo" class="btn primary">Explore the sample →</a><a href="#approach" class="btn ghost">Explore architecture</a></div>
+    </div>
+    <div class="heroaside">
+      <p class="caption">Design principle 01</p><strong>Evidence before explanation.</strong><p>Every candidate points to verbatim text. Model-generated interpretations cannot replace source evidence.</p>
+      <div class="divider"></div>
+      <p class="caption">Design principle 02</p><strong>Human judgment remains central.</strong><p>Wording changes are not automatically economic or legal materiality decisions.</p>
+    </div>
+  </div>
+</header>
+<main>
+  <section id="demo">
+    <div class="sectiontop"><div><div class="overline">Interactive product walkthrough</div><h2>Disclosure change review</h2><p class="sub">Northstar Cloud Systems · Fictional 2024 vs 2025 Form 10-K</p></div><span class="sampletag">FICTIONAL EXAMPLE · PRECOMPUTED</span></div>
+    <div class="metrics"><div class="metric"><div class="lab">Candidate changes</div><div class="num" id="metric-all">3</div><div class="hint">For analyst review</div></div><div class="metric"><div class="lab">Added disclosures</div><div class="num" id="metric-added">1</div><div class="hint">New wording detected</div></div><div class="metric"><div class="lab">Revised disclosures</div><div class="num" id="metric-revised">1</div><div class="hint">Changed wording detected</div></div><div class="metric"><div class="lab">Removed disclosures</div><div class="num" id="metric-removed">1</div><div class="hint">Previously present wording</div></div></div>
+    <div class="panel">
+      <div class="toolbar"><div class="tabs" role="tablist" aria-label="Report sections"><button class="tab" role="tab" id="tab-changes" aria-selected="true" data-tab="changes">Findings</button><button class="tab" role="tab" id="tab-eval" aria-selected="false" data-tab="eval">Evaluation</button><button class="tab" role="tab" id="tab-method" aria-selected="false" data-tab="method">How it works</button></div><div class="toolbar-actions"><button class="outline" id="download-json">Download JSON ↓</button></div></div>
+      <div class="content" id="content-changes" role="tabpanel" aria-labelledby="tab-changes">
+        <div class="callout">The sample shows <strong>precomputed output from the Python detector</strong> on fictional data. Run the code locally to compare actual SEC EDGAR filings. Attention levels are heuristics, not materiality conclusions.</div>
+        <div class="filtergroup" aria-label="Filter by attention"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="high">High attention</button><button class="filter" data-filter="medium">Medium</button><button class="filter" data-filter="low">Low</button></div>
+        <div id="finding-list" aria-live="polite"></div>
+        <div class="footerline"><span>Evidence: verbatim prior and current text</span><a href="../examples/sample_report.md" id="report-link">Read full report ↗</a></div>
+      </div>
+      <div class="content" id="content-eval" role="tabpanel" aria-labelledby="tab-eval" hidden>
+        <div class="callout"><strong>Fixture regression only:</strong> these results come from five hand-created synthetic scenarios. They must not be interpreted as real-world detection accuracy.</div>
+        <div class="evalstats"><div class="evalstat"><b>100%</b><span>Precision · synthetic</span></div><div class="evalstat"><b>100%</b><span>Recall · synthetic</span></div><div class="evalstat"><b>1.00</b><span>F1 · synthetic</span></div></div>
+        <div class="twocol"><div class="infocard"><h3>Tested regressions</h3><ul><li>Added paragraph</li><li>Revised paragraph</li><li>Removed paragraph</li><li>Unchanged paragraphs</li><li>Reordered paragraphs</li></ul></div><div class="infocard"><h3>What is not yet established</h3><ul><li>Performance across real SEC filings</li><li>Robustness to semantic paraphrases</li><li>False-negative rate on unfamiliar issuers</li><li>Human review-time reduction</li></ul></div></div>
+      </div>
+      <div class="content" id="content-method" role="tabpanel" aria-labelledby="tab-method" hidden>
+        <div class="twocol"><div class="infocard"><h3>Detection workflow</h3><p>Retrieve two Form 10-K filings from EDGAR, extract Item 1A, segment text, align passages one to one, classify wording differences, and present exact evidence with filing links.</p></div><div class="infocard"><h3>Optional LLM layer</h3><p>Ask a model to interpret candidate changes only after deterministic extraction. Reject annotations whose evidence quotes are not exact excerpts. Keep AI commentary visibly separate from source facts.</p></div><div class="infocard"><h3>Trust &amp; failure modes</h3><p>Unusual HTML, repeated boilerplate, major reordering and paraphrases can cause misses or false positives. Extraction fails explicitly rather than producing unsupported findings.</p></div><div class="infocard"><h3>Roadmap</h3><p>Build a human-labeled public filing benchmark, compare semantic matchers, track reviewer agreement and latency, and introduce source-section anchors.</p></div></div>
+      </div>
+    </div>
+  </section>
+  <section id="approach" style="margin-top:34px"><div class="overline">Product principles</div><h2>Grounded by design</h2><div class="twocol" style="margin-top:16px"><div class="infocard"><h3>Auditable</h3><p>Verbatim source evidence is the contract. The reviewer can inspect the original disclosure instead of relying on generated summaries.</p></div><div class="infocard"><h3>Explicitly limited</h3><p>The MVP is narrow by choice: Form 10-K risk factors, not investment recommendations or verified material event detection.</p></div></div></section>
+</main>
+<footer><div class="footinner"><span>© 2026 Alex Christian · Independently built portfolio prototype</span><span>Not affiliated with the SEC. Not investment advice.</span></div></footer>
+<script>
+'use strict';
+let report = null;
+let currentFilter = 'all';
+const types = { added:'Added disclosure', revised:'Revised disclosure', removed:'Removed disclosure' };
+function create(tag, cls, text) { const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=text;return el; }
+function shorten(str, max=130) { return str.length > max ? str.slice(0,max).trim()+'…' : str; }
+function viewText(text, kind) {const box=create('div','evidencebox '+(kind==='new'?'new':''));box.append(create('div','label',kind==='new'?'After · current':'Before · prior'));box.append(create('p',text?'': 'missing',text || 'No matching passage'));return box;}
+function render() {
+  const list = document.querySelector('#finding-list');list.replaceChildren();
+  if(!report){list.append(create('p','smallprint','Sample report unavailable. Try refreshing or view the JSON file.'));return;}
+  const matches=report.changes.filter(c=>currentFilter==='all'||c.attention===currentFilter);
+  if(!matches.length){list.append(create('p','smallprint','No findings for this filter.'));return;}
+  matches.forEach((c, i)=>{
+    const row=create('article','finding');const head=create('button','findinghead');head.setAttribute('aria-expanded',i===0?'true':'false');
+    const left=create('div');const pill=create('span','pill '+c.attention,c.attention.toUpperCase());left.append(pill);left.append(create('span','findingtitle',types[c.change_type]||c.change_type));
+    left.append(create('div','findingmeta',shorten(c.new_quote || c.old_quote)));head.append(left);head.append(create('span','chev',i===0?'−':'+'));
+    const body=create('div','findingbody');body.append(create('div','smallprint',c.rationale));const grid=create('div','evidencegrid');grid.append(viewText(c.old_quote,'old'));grid.append(viewText(c.new_quote,'new'));body.append(grid);
+    if(i!==0) body.hidden=true;
+    head.addEventListener('click',()=>{body.hidden=!body.hidden;head.setAttribute('aria-expanded',String(!body.hidden));head.lastChild.textContent=body.hidden?'+':'−';});row.append(head,body);list.append(row);
+  });
+}
+async function load() {
+  try{const res=await fetch('./sample_report.json');if(!res.ok)throw new Error('HTTP '+res.status);report=await res.json();
+    document.querySelector('#metric-all').textContent=report.changes.length;
+    for(const kind of ['added','revised','removed'])document.querySelector('#metric-'+kind).textContent=report.changes.filter(c=>c.change_type===kind).length;
+    render();
+  }catch(err){render();}
+}
+document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{
+ const name=btn.dataset.tab;
+ document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',String(b===btn)));
+ for(const key of ['changes','eval','method']) document.querySelector('#content-'+key).hidden=(key!==name);
+}));
+document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',()=>{currentFilter=btn.dataset.filter;document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active',b===btn));render();}));
+document.querySelector('#download-json').addEventListener('click',()=>{
+ if(!report)return;
+ const file=new Blob([JSON.stringify(report,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(file);const anchor=document.createElement('a');anchor.href=url;anchor.download='sample_report.json';anchor.click();setTimeout(()=>URL.revokeObjectURL(url),3000);
+});
+// Use direct linked code repository for standalone Pages deployment.
+document.querySelector('#report-link').href='https://github.com/alexanderwchristian/sec-filing-intelligence-agent/blob/main/examples/sample_report.md';
+load();
+</script>
+</body>
+</html>
