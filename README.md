@@ -39,7 +39,19 @@ verification; suspected changes are labeled **candidates**.
 
 ## Browser demo
 
-The [recruiter-friendly browser walkthrough](https://alexanderwchristian.github.io/sec-filing-intelligence-agent/) visualizes a **precomputed, fictional** output of the Python detector. It runs as static GitHub Pages (no API keys or SEC rate limits). The Streamlit app below runs live retrieval and actual comparisons. To publish the static demo, enable GitHub Pages from the `main` branch `/docs` folder after pushing the repo.
+The browser walkthrough in [`docs/index.html`](docs/index.html) is a self-contained,
+read-only presentation with four **hand-authored synthetic** stock/fund candidates,
+inspectable synthetic evidence spans, search, track filters, a pipeline illustration,
+coverage/evaluation caveats, a sample briefing and a guided three-minute tour.
+Open the HTML file directly in a browser; no credentials or network are needed.
+The original detector-output walkthrough is preserved at `docs/legacy-demo.html`.
+
+**Hosting is not yet verified:** on November 12, 2026, the
+[intended GitHub Pages address](https://alexanderwchristian.github.io/sec-filing-intelligence-agent/)
+returned 404. Review/merge the demo change and explicitly authorize publication
+before enabling Pages from `main` / `/docs`. See the
+[presentation and publication guide](docs/DEMO_WALKTHROUGH.md).
+This static page does not run ingestion, investigations or email delivery.
 
 ## Product preview
 
