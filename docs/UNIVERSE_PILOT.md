@@ -110,3 +110,51 @@ necessary before reporting real-world precision/recall/F1.
 Status at authoring: frozen 500 + 50 universe is prepared; identity mapping
 and watchlist scanning on the official SEC service are not yet verified
 end-to-end. No paid providers or automatic AI runs are enabled.
+
+## First-batch acceptance review (November 3, 2026)
+
+The initial continuation review confirmed main at `6d937a7` and found that
+the generic batch runner can finish with zero eligible filings. Completion
+alone is therefore not an acceptance result. The separate dual-track smoke
+test covers only one stock and one fund, rather than the requested 10+1.
+
+Use the manual **Live fund and stock pilot acceptance** workflow on the
+reviewed branch with `first_batch=true`, `trace_run=false`, and an initial
+window of October 1 through November 3, 2026. The same operation locally is:
+
+    python -m filing_intel.batch_acceptance \
+      --since 2026-10-01 --to 2026-11-03 --max-requests 120
+
+It requires a fresh SQLite DB, verifies all 503 security mappings and 50
+fund tuples against official SEC maps, then applies the watchlist and scans
+**only batch zero** (10 unique issuers plus one fund). It has a shared
+120 HTTP-attempt budget across mapping, discovery, filing retrieval and
+replay, including retries. Requests remain serial with a minimum 0.55 second
+interval. Any 401/403/429 or redirect stops further HTTP access for this run.
+No model calls, trace export, delivery, hosting, or later batches are enabled.
+The workflow shares the live acceptance concurrency group; do not run the
+separate identity workflow concurrently with filing acceptance.
+
+Reports include the full identity disagreements, per-watch source inventory
+and hashes, every candidate and baseline reason, normalized quote grounding,
+initial/replay errors, immutable event-ID comparison, HTTP counts and budget
+stop reason. Grounding verifies stored normalized text, not independent
+semantic correctness or original HTML coordinates. A gate failure for no
+paired candidate means further manual review is needed; unchanged filings
+can legitimately produce no change candidates. It is not evidence of a
+detector defect by itself. Review fund passage attribution even on a pass.
+
+Local validation: Python 3.12.16, **75 offline tests passed**, compilation,
+offline manifest validation and the five-case synthetic CLI evaluation.
+The full first-batch regression uses fabricated filing text and maps derived
+from the snapshot: it validates wiring, boundaries and replay only. Its
+quotes are not real SEC filing findings. Synthetic evaluation scores are
+not real-world accuracy. No independently labeled accuracy result exists.
+
+Live status at this review: **not executed**. The GitHub connector has no
+workflow-dispatch operation, the browser is signed out, and Actions secrets
+are not available locally. Do not retrieve or print the contact secret.
+An authenticated GitHub session is needed to run the existing identity
+workflow and the reviewed acceptance branch. After running, replace this
+pending status with run/artifact links, actual HTTP/source results and a
+manual error/baseline/fund-attribution review before considering batch one.
